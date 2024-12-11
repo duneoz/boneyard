@@ -15,6 +15,13 @@ router.post('/submit', async (req, res) => {
   }
 
   try {
+    // Ensure no duplicate confidence levels in the request
+    const confidenceValues = picks.map((pick) => pick.confidence);
+    if (new Set(confidenceValues).size !== confidenceValues.length) {
+      return res.status(400).json({ message: 'Confidence levels must be unique' });
+    }
+
+  try {
     // Ensure the user has not already submitted picks
     const user = await User.findById(userId);
     if (!user) {
@@ -47,6 +54,20 @@ router.post('/submit', async (req, res) => {
     await user.save();
 
     res.status(201).json({ message: 'Picks submitted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+// Get all picks for a user with confidence levels
+router.get('/user/:userId', async (req, res) => {
+  try {
+    const picks = await Pick.find({ userId: req.params.userId })
+      .populate('gameId') // Populate game details if needed
+      .select('gameId selectedWinner confidence isCorrect'); // Return only relevant fields
+    res.status(200).json(picks);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
