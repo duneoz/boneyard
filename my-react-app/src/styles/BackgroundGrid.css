@@ -3,23 +3,32 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 200%; /* Increased height to allow more rows to be offscreen */
+  height: 300%; /* Increased height to allow more rows to be offscreen */
   overflow: hidden;
   z-index: -1;
   background-color: transparent;
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 columns */
-  grid-template-rows: repeat(10, 1fr); /* Increase rows to 10 */
-  padding: 2.5%;
+  grid-template-columns: repeat(6, 1fr); /* 5 columns */
+  grid-template-rows: repeat(15, 1fr); /* Increase rows to 10 */
+  /* padding: 2.5%; */
   /* will-change: transform; */
   animation: floatUp 10s linear infinite; /* Adjust duration as needed */
 }
 
 .grid-item {
   position: absolute;
+  transform: translate(-50%, -50%);
+  /* display: flex; */
+  /* justify-content: center; */
   height: 150px; /* Adjust this as needed */
   /* will-change: transform;
   animation: floatUp 10s linear infinite; Adjust duration as needed */
+}
+
+.grid-item img {
+    max-width: 10%;
+    max-height: 100%;
+    justify-content: center;
 }
 
 @keyframes floatUp {
@@ -38,11 +47,12 @@
 @media (max-width: 768px) {
     .background-grid {
         padding: 5%;
-      grid-template-columns: repeat(4, 1fr); /* Reduce to 4 columns on mobile */
-      grid-template-rows: repeat(5, 1fr); /* Maintain 5 rows */
+      grid-template-columns: repeat(6, 1fr); /* Reduce to 4 columns on mobile */
+      grid-template-rows: repeat(15, 3fr); /* Maintain 5 rows */
+      
     }
   
     .grid-item {
-      height: 50px; /* Smaller logos for mobile */
+      height: 75px; /* Smaller logos for mobile */
     }
   }
