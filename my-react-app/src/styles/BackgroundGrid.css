@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 300%; /* Increased height to allow more rows to be offscreen */
+  height: 300vh; /* Increased height to allow more rows to be offscreen */
   overflow: hidden;
   z-index: -1;
   background-color: transparent;
@@ -14,6 +14,7 @@
   /* will-change: transform; */
   animation: floatUp 10s linear infinite; /* Adjust duration as needed */
 }
+    
 
 .grid-item {
   position: absolute;
@@ -48,7 +49,7 @@
     .background-grid {
         padding: 5%;
       grid-template-columns: repeat(6, 1fr); /* Reduce to 4 columns on mobile */
-      grid-template-rows: repeat(15, 3fr); /* Maintain 5 rows */
+      grid-template-rows: repeat(15, 1fr); /* Maintain 5 rows */
       
     }
   
