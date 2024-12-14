@@ -28,17 +28,14 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ message: 'Email already in use' });
     }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Create new user
+    // Create new user without manually hashing the password
     const newUser = new User({
       email,
-      password: hashedPassword,
+      password,  // Do not hash the password here; the pre-save hook will handle it
       username,
     });
 
+    console.log('Saving new user with password:', password);  // This will log the plain password
     await newUser.save();
 
     // Generate JWT
@@ -58,14 +55,24 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    console.log('Login attempt with:', email, password);
+
     // Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
+      console.log('User not found');
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Compare passwords
+    console.log('Found user:', user);
+
+    // Log the password comparison in more detail
+    console.log('Password entered by user:', password);
+    console.log('Stored hashed password:', user.password);
+
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log('Password match result:', isMatch);
+
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
@@ -84,7 +91,7 @@ router.post('/login', async (req, res) => {
       picksSubmitted,  // Include picksSubmitted status in the response
     });
   } catch (err) {
-    console.error(err);
+    console.error('Error during login:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });

@@ -45,14 +45,14 @@
     right: -4px;
     bottom: -4px;
     /* background: linear-gradient(45deg, #ff6a00, #ffcc00); */
-    border: solid 1em;
-    border-image: 
+    /* border: solid 1em; */
+    /* border-image:  */
     /* adjust gradient as needed, I just used a random palette */
-    conic-gradient(from var(--a), rgb(101, 4, 128), white,gray) 1;
+    /* conic-gradient(from var(--a), rgb(101, 4, 128), white,gray) 1; */
     /* blur this pseudo */
-    filter: blur(.01em);
+    /* filter: blur(.01em); */
     /* tweak animation duration as necessary */
-    animation: a 5s linear infinite;
+    /* animation: a 5s linear infinite; */
     /* needed so pseudo is displayed */
     border-radius: inherit;
     opacity: 0;
