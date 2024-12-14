@@ -13,30 +13,6 @@
   z-index: 10; /* Ensure the header is above the background */
 }
 
-.login-screen {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
-  z-index: 5;
-}
-
-.login-btn {
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.login-btn:hover {
-  background-color: #0056b3;
-}
 
 .home-page {
   position: absolute;

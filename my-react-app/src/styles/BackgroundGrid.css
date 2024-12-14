@@ -3,34 +3,30 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 300vh; /* Increased height to allow more rows to be offscreen */
+  height: 600vh; /* Increased height to allow more rows to be offscreen */
   overflow: hidden;
   z-index: -1;
   background-color: transparent;
   display: grid;
   grid-template-columns: repeat(6, 1fr); /* 5 columns */
-  grid-template-rows: repeat(15, 1fr); /* Increase rows to 10 */
+  grid-template-rows: repeat(30, 1fr); /* Increase rows to 10 */
   /* padding: 2.5%; */
   /* will-change: transform; */
-  animation: floatUp 10s linear infinite; /* Adjust duration as needed */
+  animation: floatUp 30s linear infinite; /* Adjust duration as needed */
 }
     
 
 .grid-item {
   position: absolute;
   transform: translate(-50%, -50%);
-  /* display: flex; */
-  /* justify-content: center; */
-  height: 150px; /* Adjust this as needed */
-  /* will-change: transform;
-  animation: floatUp 10s linear infinite; Adjust duration as needed */
+  max-width: 250px;
+  height: 195px; /* Increase the height for larger logos */
+  object-fit: contain;
+  /* width: auto; */
+  /* width: 200px; Increase the width for larger logos */
 }
 
-.grid-item img {
-    max-width: 10%;
-    max-height: 100%;
-    justify-content: center;
-}
+
 
 @keyframes floatUp {
     from {
@@ -47,13 +43,17 @@
   /* Mobile adjustments */
 @media (max-width: 768px) {
     .background-grid {
-        padding: 5%;
-      grid-template-columns: repeat(6, 1fr); /* Reduce to 4 columns on mobile */
-      grid-template-rows: repeat(15, 1fr); /* Maintain 5 rows */
+        /* padding: 5%; */
+        height: 800vh;
+      grid-template-columns: repeat(6, 1fr); 
+      grid-template-rows: repeat(50, 1fr); 
+      animation: floatUp 20s linear infinite; /* Adjust duration as needed */
       
     }
   
     .grid-item {
-      height: 75px; /* Smaller logos for mobile */
+      max-width: 100px;
+      height: 110px; /* Smaller logos for mobile */
+      object-fit: contain;
     }
   }

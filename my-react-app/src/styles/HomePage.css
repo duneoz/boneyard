@@ -1,0 +1,77 @@
+/* Center the buttons on the screen */
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+  }
+  
+  /* Register the --a property for animating */
+  @property --a { /* must register --a to animate it */
+      syntax: '<angle>';
+      initial-value: 0deg;
+      /* used only on pseudo, nowhere to be inherited, 
+       * better perf if set false, see 
+       * https://www.bram.us/2024/10/03/benchmarking-the-performance-of-css-property/ */
+      inherits: false
+  }
+  
+  /* Base button styles */
+  .home-page-button {
+    /* hide outer part of glow */
+      overflow: hidden;
+    position: relative;
+    background-color: white; /* Dark background */
+    color: black;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 5px;
+    outline: none;
+    transition: all 0.3s ease;
+    z-index: 1;
+    margin: 1%;
+    box-shadow: 0 10px 20px 0 rgba(.5, .5, .5, 0.5), 0 10px 40px 0 rgba(.5, .5, .5, 0.5);
+  }
+  
+  /* Inner glow effect */
+  .home-page-button::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    /* background: linear-gradient(45deg, #ff6a00, #ffcc00); */
+    border: solid 1em;
+    border-image: 
+    /* adjust gradient as needed, I just used a random palette */
+    conic-gradient(from var(--a), rgb(101, 4, 128), white,gray) 1;
+    /* blur this pseudo */
+    filter: blur(.01em);
+    /* tweak animation duration as necessary */
+    animation: a 5s linear infinite;
+    /* needed so pseudo is displayed */
+    border-radius: inherit;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.5s ease-in-out;
+    
+  }
+  
+  /* On hover, show inner glow effect */
+  .home-page-button:before {
+    opacity: 1;
+    filter: blur(9px);
+  }
+  
+  /* Optional: Add hover effect to scale the button slightly */
+  .home-page-button:hover {
+    transform: scale(1.05);
+  }
+  
+  /* animate --a from its initial-value 0deg to 1turn */
+  @keyframes a { to { --a: 1turn } }
+  

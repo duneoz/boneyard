@@ -1,3 +1,10 @@
+const express = require('express'); // Import express
+const router = express.Router(); // Create a new router instance
+
+const User = require('../models/User');
+const Game = require('../models/Game');
+const Pick = require('../models/Pick');
+
 // Submit picks for a user
 router.post('/submit', async (req, res) => {
   const { userId, picks } = req.body; // picks is an array of gameId and selectedWinner
@@ -21,7 +28,6 @@ router.post('/submit', async (req, res) => {
       return res.status(400).json({ message: 'Confidence levels must be unique' });
     }
 
-  try {
     // Ensure the user has not already submitted picks
     const user = await User.findById(userId);
     if (!user) {
@@ -60,7 +66,6 @@ router.post('/submit', async (req, res) => {
   }
 });
 
-
 // Get all picks for a user with confidence levels
 router.get('/user/:userId', async (req, res) => {
   try {
@@ -73,3 +78,5 @@ router.get('/user/:userId', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+module.exports = router;  // Don't forget to export the router
