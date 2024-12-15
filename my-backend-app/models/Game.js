@@ -19,7 +19,7 @@ const gameSchema = new mongoose.Schema({
     required: true
   },
   spread: {
-    type: Number,
+    type: String,
     required: true
   },
   winner: {

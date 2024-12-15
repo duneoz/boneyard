@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import '../styles/LogInModal.css'; // Reuse modal styles
 
-const LogInModal = ({ isOpen, onClose, onLogInSuccess, switchToSignUp }) => {
+const LogInModal = ({ isOpen, onClose, onLogInSuccess, switchToSignUp, setUserPicksSubmitted }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  
 
   const handleLogIn = async (e) => {
     e.preventDefault();
@@ -27,6 +28,7 @@ const LogInModal = ({ isOpen, onClose, onLogInSuccess, switchToSignUp }) => {
       if (response.ok) {
         localStorage.setItem('authToken', data.token);
         console.log('Login successful!');
+        setUserPicksSubmitted(data.picksSubmitted); // Update state
         onLogInSuccess();  // Trigger success handler passed from HomePage
         onClose();  // Close the modal
       } else {

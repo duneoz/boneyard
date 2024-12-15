@@ -3,6 +3,9 @@ import BackgroundGrid from './BackgroundGrid';
 import '../styles/HomePage.css';
 import SignUpModal from './SignUpModal';
 import LogInModal from './LogInModal';
+import Header from './Header';
+import MakePicksForm from './MakePicksForm';
+// import MakePicksForm from './MakePicksForm';
 
 const HomePage = () => {
   const logoContext = require.context('../assets/logos', false, /\.(png|jpe?g|svg)$/);
@@ -11,6 +14,20 @@ const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLogInModalOpen, setIsLogInModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [picksSubmitted, setPicksSubmitted] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(false); // To control header visibility
+  const [isMakePicksModalOpen, setMakePicksModalOpen] = useState(false);
+
+
+  const handleMakePicksClick = () => {
+    // Navigate to the "Make Picks" form or route
+    console.log('Navigating to Make Picks modal...');
+    setMakePicksModalOpen(true);  // Open the modal
+  };
+
+  const handleCloseMakePicksModal = () => {
+    setMakePicksModalOpen(false);  // Close the modal
+  };
 
   // Open Log In Modal
   const handleLogin = () => {
@@ -39,7 +56,11 @@ const HomePage = () => {
     console.log('User logged in successfully!');
     setIsLogInModalOpen(false);  // Close Log In Modal
     setIsLoggedIn(true);         // Update logged-in state
+    setIsHeaderVisible(true); // Show header upon successful login
   };
+
+  // const handleOpenModal = () => setIsModalOpen(true);
+  // const handleCloseModal = () => setIsModalOpen(false);
 
   // Switch to Sign Up modal from Log In modal
   const switchToSignUp = () => {
@@ -60,6 +81,7 @@ const HomePage = () => {
 
   return (
     <div className="HomePage">
+      {isHeaderVisible && <Header />} {/* Conditionally render header */}
       {!isLoggedIn && (
         <>
           <BackgroundGrid logos={logos} />
@@ -78,10 +100,32 @@ const HomePage = () => {
       onClose={() => setIsLogInModalOpen(false)}
       onLogInSuccess={handleLogInSuccess}
       switchToSignUp={switchToSignUp}
+      setUserPicksSubmitted={setPicksSubmitted}
     />
   </>
 )}
-      {isLoggedIn && <div className="home-page">Welcome to Nick's Bowl Bash 2024!</div>}
+
+      {/* {isLoggedIn && <div className="home-page">Welcome to Nick's Bowl Bash 2024!</div>} */}
+
+      {!picksSubmitted ? (
+        <button onClick={handleMakePicksClick} className="glowing-button">
+          Make Picks
+        </button>
+      ) : (
+        <div className="picks-table" >
+          {/* Render user picks here */}
+          <p>Your picks will show here.</p>
+        </div>
+      )}
+
+      {/* Make Picks Modal */}
+      {isMakePicksModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <MakePicksForm onClose={handleCloseMakePicksModal} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
