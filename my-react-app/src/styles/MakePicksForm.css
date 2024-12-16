@@ -139,3 +139,40 @@
     transform: none; /* Prevent scaling effect */
     cursor: not-allowed; /* Optional: Show a 'not-allowed' cursor */
   }
+
+  .confidence-dropdown {
+    width: 100%;
+    max-width: 150px; /* Limit the width */
+    padding: 8px;
+    margin-top: 10px;
+    font-size: 14px;
+    background-color: #f0f0f0; /* Light gray background */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+
+  .confidence-dropdown:focus {
+    outline: none;
+    border-color: #007bff; /* Blue border on focus */
+    background-color: #e9f7ff; /* Light blue background on focus */
+  }
+  
+  .confidence-dropdown option {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .confidence-dropdown:disabled {
+    background-color: #dcdcdc; /* Light gray for disabled state */
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 768px) {
+    .confidence-dropdown {
+      max-width: 100%; /* Full width on smaller screens */
+    }
+  }
