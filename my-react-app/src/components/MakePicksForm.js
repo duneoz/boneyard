@@ -29,6 +29,29 @@ const MakePicks = ({ onClose }) => {
     fetchGames();
   }, []);
 
+  // Function to format date to mm/dd, X:XX (local timezone)
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = {
+      month: 'numeric',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    };
+  
+    // Format the date
+    let formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+  
+    // Remove the leading zero from the hour if it's between 1 and 9
+    const hour = date.getHours();
+    if (hour >= 1 && hour <= 9) {
+      formattedDate = formattedDate.replace(/^0(\d{1})/, '$1');
+    }
+  
+    return formattedDate;
+  };
+
   // Bracket relationships (hardcoded based on your example)
   const bracket = {
     // First round picks
@@ -156,7 +179,7 @@ const MakePicks = ({ onClose }) => {
           >
             <h3>{game.name}</h3>
             <p>Spread: {game.spread}</p>
-            <p>Kickoff: {game.date}</p>
+            <p>Kickoff: {formatDate(game.date)}</p>
             <div className="teams-container">
               <div
                 className={`team-card ${userPicks[game._id] === 'team1' ? 'selected' : ''} ${game.isLateEntry ? 'disabled' : ''}`}
