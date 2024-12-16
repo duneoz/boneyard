@@ -4,7 +4,8 @@ import '../styles/HomePage.css';
 import SignUpModal from './SignUpModal';
 import LogInModal from './LogInModal';
 import Header from './Header';
-import MakePicksForm from './MakePicksForm';
+import PicksModal from './PicksModal'
+// import MakePicksForm from './MakePicksForm';
 // import MakePicksForm from './MakePicksForm';
 
 const HomePage = () => {
@@ -16,17 +17,18 @@ const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [picksSubmitted, setPicksSubmitted] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(false); // To control header visibility
-  const [isMakePicksModalOpen, setMakePicksModalOpen] = useState(false);
+  // const [isMakePicksModalOpen, setMakePicksModalOpen] = useState(false);
+  const [isPicksModalOpen, setPicksModalOpen] = useState(false);
 
 
-  const handleMakePicksClick = () => {
+  const handlePicksModalClick = () => {
     // Navigate to the "Make Picks" form or route
-    console.log('Navigating to Make Picks modal...');
-    setMakePicksModalOpen(true);  // Open the modal
+    console.log('Navigating to Picks modal...');
+    setPicksModalOpen(true);  // Open the modal
   };
 
-  const handleCloseMakePicksModal = () => {
-    setMakePicksModalOpen(false);  // Close the modal
+  const handleClosePicksModal = () => {
+    setPicksModalOpen(false);  // Close the modal
   };
 
   // Open Log In Modal
@@ -108,7 +110,7 @@ const HomePage = () => {
       {/* {isLoggedIn && <div className="home-page">Welcome to Nick's Bowl Bash 2024!</div>} */}
 
       {!picksSubmitted ? (
-        <button onClick={handleMakePicksClick} className="glowing-button">
+        <button onClick={handlePicksModalClick} className="glowing-button">
           Make Picks
         </button>
       ) : (
@@ -119,10 +121,10 @@ const HomePage = () => {
       )}
 
       {/* Make Picks Modal */}
-      {isMakePicksModalOpen && (
+      {isPicksModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <MakePicksForm onClose={handleCloseMakePicksModal} />
+            <PicksModal onClose={handleClosePicksModal} />
           </div>
         </div>
       )}

@@ -1,10 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/MakePicksForm.css';
 
-const MakePicks = ({ onClose }) => {
-  const [games, setGames] = useState([]); // All games fetched from backend
-  const [userPicks, setUserPicks] = useState({}); // User's picks
-  const [updatedGames, setUpdatedGames] = useState([]); // Games updated dynamically based on picks
+const MakePicks = () => {
+  // Bracket relationships (hardcoded based on your example)
+  const bracket = {
+    // First round picks
+    "67591a1e86598a7078f6d30a": { nextGameId: "67591a1e86598a7078f6d324", semiFinalGameId:"67591a1e86598a7078f6d32b", finalGameId: "67591a1e86598a7078f6d32c", team: "team1" },
+    "67591a1e86598a7078f6d309": { nextGameId: "67591a1e86598a7078f6d323", semiFinalGameId:"67591a1e86598a7078f6d32b", finalGameId: "67591a1e86598a7078f6d32c", team: "team1" },
+    "67591a1e86598a7078f6d308": { nextGameId: "67591a1e86598a7078f6d322", semiFinalGameId:"67591a1e86598a7078f6d32a", finalGameId: "67591a1e86598a7078f6d32c", team: "team1" },
+    "67591a1e86598a7078f6d307": { nextGameId: "67591a1e86598a7078f6d325", semiFinalGameId:"67591a1e86598a7078f6d32a", finalGameId: "67591a1e86598a7078f6d32c", team: "team1" },
+
+    // Second round picks
+    "67591a1e86598a7078f6d324": { nextGameId: "67591a1e86598a7078f6d32b", team: "team2" },
+    "67591a1e86598a7078f6d323": { nextGameId: "67591a1e86598a7078f6d32b", team: "team1" },
+    "67591a1e86598a7078f6d322": { nextGameId: "67591a1e86598a7078f6d32a", team: "team1" },
+    "67591a1e86598a7078f6d325": { nextGameId: "67591a1e86598a7078f6d32a", team: "team2" },
+
+    // Semi-final picks
+    "67591a1e86598a7078f6d32b": { nextGameId: "67591a1e86598a7078f6d32c", team: "team2" },
+    "67591a1e86598a7078f6d32a": { nextGameId: "67591a1e86598a7078f6d32c", team: "team1" }
+  };
+
+  const [games, setGames] = useState([]);
+  const [userPicks, setUserPicks] = useState({});
+  const [updatedGames, setUpdatedGames] = useState([]);
+  const [nextStep, setNextStep] = useState(false);
+  const [selectedGames, setSelectedGames] = useState([]);
+
+  const formatDate = (date) => {
+    const options = { month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+    return new Date(date).toLocaleDateString(undefined, options);
+  };
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -29,153 +55,90 @@ const MakePicks = ({ onClose }) => {
     fetchGames();
   }, []);
 
-  // Function to format date to mm/dd, X:XX (local timezone)
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = {
-      month: 'numeric',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    };
-  
-    // Format the date
-    let formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
-  
-    // Remove the leading zero from the hour if it's between 1 and 9
-    const hour = date.getHours();
-    if (hour >= 1 && hour <= 9) {
-      formattedDate = formattedDate.replace(/^0(\d{1})/, '$1');
-    }
-  
-    return formattedDate;
-  };
-
-  // Bracket relationships (hardcoded based on your example)
-  const bracket = {
-    // First round picks
-    "67591a1e86598a7078f6d30a": { nextGameId: "67591a1e86598a7078f6d324", semiFinalGameId:"67591a1e86598a7078f6d32b", finalGameId: "67591a1e86598a7078f6d32c", team: "team1" },
-    "67591a1e86598a7078f6d309": { nextGameId: "67591a1e86598a7078f6d323", semiFinalGameId:"67591a1e86598a7078f6d32b", finalGameId: "67591a1e86598a7078f6d32c", team: "team1" },
-    "67591a1e86598a7078f6d308": { nextGameId: "67591a1e86598a7078f6d322", semiFinalGameId:"67591a1e86598a7078f6d32a", finalGameId: "67591a1e86598a7078f6d32c", team: "team1" },
-    "67591a1e86598a7078f6d307": { nextGameId: "67591a1e86598a7078f6d325", semiFinalGameId:"67591a1e86598a7078f6d32a", finalGameId: "67591a1e86598a7078f6d32c", team: "team1" },
-
-    // Second round picks
-    "67591a1e86598a7078f6d324": { nextGameId: "67591a1e86598a7078f6d32b", team: "team2" },
-    "67591a1e86598a7078f6d323": { nextGameId: "67591a1e86598a7078f6d32b", team: "team1" },
-    "67591a1e86598a7078f6d322": { nextGameId: "67591a1e86598a7078f6d32a", team: "team1" },
-    "67591a1e86598a7078f6d325": { nextGameId: "67591a1e86598a7078f6d32a", team: "team2" },
-
-    // Semi-final picks
-    "67591a1e86598a7078f6d32b": { nextGameId: "67591a1e86598a7078f6d32c", team: "team2" },
-    "67591a1e86598a7078f6d32a": { nextGameId: "67591a1e86598a7078f6d32c", team: "team1" }
-  };
-
   const handlePick = (gameId, teamKey) => {
     setUserPicks((prevPicks) => {
       const updatedPicks = {
         ...prevPicks,
         [gameId]: teamKey,
       };
-
-      // If a Round 1 pick is changed, clear corresponding Round 2 and Semi-final picks
+  
       if (gameId.includes('67591a1e86598a7078f6d30')) {
-        // Round 1 pick has been changed
         const bracketEntry = bracket[gameId];
         if (bracketEntry) {
           const { nextGameId, semiFinalGameId, finalGameId } = bracketEntry;
-
-          // Clear the downstream pick for the Round 2 game
-          updatedPicks[nextGameId] = null; // Reset Round 2 pick to null
-
-          // Clear the downstream pick for the Semi-final game
-          updatedPicks[semiFinalGameId] = null; // Reset Semi-final pick to null
-
-          // Clear the downstream pick for the Championship game
-          updatedPicks[finalGameId] = null; // Reset Semi-final pick to null
-
-          // Set Team 1 and Team 2 cards to "TBD"
+  
+          updatedPicks[nextGameId] = null;
+          updatedPicks[semiFinalGameId] = null;
+          updatedPicks[finalGameId] = null;
+  
           updatedPicks[semiFinalGameId] = { team1: "TBD", team2: "TBD" };
         }
       }
-
+  
       return updatedPicks;
     });
-
-    // Fetch the selected team name from the current game
+  
     const selectedTeam = updatedGames.find((game) => game._id === gameId)?.[teamKey];
-
+  
     const updateDownstreamGames = (currentGameId, selectedTeamName) => {
       const bracketEntry = bracket[currentGameId];
       if (bracketEntry) {
         const { nextGameId, team: teamPosition, semiFinalGameId, finalGameId } = bracketEntry;
-
-        // Check if this game has a downstream effect (Round 2, Semi-final, Round 3)
+  
         setUpdatedGames((prevGames) =>
           prevGames.map((game) =>
             game._id === nextGameId
-              ? {
-                  ...game,
-                  [teamPosition]: selectedTeamName || "TBD", // Set Team to TBD if no selection
-                }
+              ? { ...game, [teamPosition]: selectedTeamName || "TBD" }
               : game
           )
         );
-
-        // Apply changes for Semi-final game as well
+  
         if (semiFinalGameId) {
           setUpdatedGames((prevGames) =>
             prevGames.map((game) =>
               game._id === semiFinalGameId
-                ? {
-                    ...game,
-                    team1: "TBD", // Force Team 1 to "TBD" for Semi-final
-                    team2: "TBD", // Force Team 2 to "TBD" for Semi-final
-                  }
+                ? { ...game, team1: "TBD", team2: "TBD" }
                 : game
             )
           );
         }
-
-        // Apply changes for Final game as well
+  
         if (finalGameId) {
-            setUpdatedGames((prevGames) =>
-              prevGames.map((game) =>
-                game._id === finalGameId
-                  ? {
-                      ...game,
-                      team1: "TBD", // Force Team 1 to "TBD" for Semi-final
-                      team2: "TBD", // Force Team 2 to "TBD" for Semi-final
-                    }
-                  : game
-              )
-            );
-          }
+          setUpdatedGames((prevGames) =>
+            prevGames.map((game) =>
+              game._id === finalGameId
+                ? { ...game, team1: "TBD", team2: "TBD" }
+                : game
+            )
+          );
+        }
       }
     };
-
-    // Start updating downstream games if there's a selected team
+  
     if (selectedTeam) {
       updateDownstreamGames(gameId, selectedTeam);
     }
   };
 
-  const handleSave = () => {
-    // Logic to save picks (send to the server, etc.)
-    console.log('Saving picks:', userPicks);
-    onClose(); // Close modal after saving
+  const handleNextStep = () => {
+    const selectedGamesList = Object.keys(userPicks).map((gameId) => ({
+      gameId,
+      team: userPicks[gameId],
+    }));
+    setSelectedGames(selectedGamesList);
+    setNextStep(true);
   };
 
   return (
     <div className="make-picks-container">
-      <h1>Make Your Picks</h1>
+      <h1> Step 1: Make Your Picks</h1>
       <div>Spread provided for context, but you are not picking against the spread! Pick the game winners!</div>
       <div>
         {updatedGames.map((game) => (
           <div
             key={game._id}
             className={`game-card ${game.isLateEntry ? 'late-entry' : ''}`}
-            style={{ opacity: game.isLateEntry ? 0.5 : 1 }} // Style games that are in the past
+            style={{ opacity: game.isLateEntry ? 0.5 : 1 }}
           >
             <h3>{game.name}</h3>
             <p>Spread: {game.spread}</p>
@@ -196,14 +159,6 @@ const MakePicks = ({ onClose }) => {
             </div>
           </div>
         ))}
-      </div>
-      <div className="modal-footer">
-        <button className="save-button" onClick={handleSave}>
-          Save
-        </button>
-        <button onClick={onClose} className="close-button">
-          Close
-        </button>
       </div>
     </div>
   );
