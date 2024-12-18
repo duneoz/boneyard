@@ -46,25 +46,28 @@
     background-color: darkred;
 }
 
-
-/* Footer container */
+/* PicksModal footer */
 .modal-footer {
     display: flex;
-    justify-content: flex-end; /* Align buttons to the right */
-    gap: 10px; /* Add space between buttons */
-    margin-top: 20px;
+    justify-content: center; /* Center buttons horizontally */
+    align-items: center; /* Vertically center buttons */
+    /* padding: 1rem; */
+    width: 100%;
 }
 
 /* Button styles */
 .next-step-button,
 .save-button,
-.close-button {
+.close-button,
+.modal-close-button {
     padding: 8px 12px;
     border: none;
+    margin: 0 10px; /* Add space between buttons */
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s;
+    width: 45%;
 }
 
 /* Next Step button */

@@ -5,26 +5,26 @@ import "../styles/PicksModal.css";
 
 const PicksModal = ({ onClose }) => {
     const [nextStep, setNextStep] = useState(false);
-    const [selectedGames, setSelectedGames] = useState([]);
+    const [userPicks, setUserPicks] = useState({}); // Manage user picks
 
+    // Function to handle transition to next step (Confidence Step)
     const handleNextStep = () => {
-        setNextStep(true);
+        setNextStep(true); // Move to the next step
     };
 
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                    
-                {/* Content */}
+                {/* Conditionally render MakePicksForm or ConfidenceStep */}
                 {!nextStep ? (
                     <MakePicksForm
-                        selectedGames={selectedGames}
-                        setSelectedGames={setSelectedGames}
+                        userPicks={userPicks}
+                        setUserPicks={setUserPicks} // Pass setter to MakePicksForm
                     />
                 ) : (
                     <ConfidenceStep
-                        selectedGames={selectedGames}
-                        setSelectedGames={setSelectedGames}
+                        userPicks={userPicks}  // Pass userPicks to ConfidenceStep
+                        onClose={onClose}
                     />
                 )}
 
@@ -42,7 +42,7 @@ const PicksModal = ({ onClose }) => {
                     </button>
 
                     {nextStep && (
-                        <button className="save-button" onClick={onClose}>
+                        <button className="save-button" onClick={() => console.log("Saving picks and closing modal")}>
                             Save and Close
                         </button>
                     )}

@@ -1,34 +1,19 @@
 const mongoose = require('mongoose');
 
-// Game Schema
 const gameSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
+  name: String,      // Name of the game
+  date: Date,        // Date and time of the game
+  team1: String,     // Team 1 name
+  team2: String,     // Team 2 name
+  spread: String,    // Spread for the game
+  winner: String,    // Actual winner after the game
+  nextGameId: {      // The _id of the next game this game feeds into
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Game',     // Reference to the same 'Game' collection
+    default: null,   // Null if there is no next game (e.g., the final)
   },
-  date: {
-    type: Date,
-    required: true
-  },
-  team1: {
-    type: String,
-    required: true
-  },
-  team2: {
-    type: String,
-    required: true
-  },
-  spread: {
-    type: String,
-    required: true
-  },
-  winner: {
-    type: String, // Will store the winner after the game is played (team1 or team2)
-    required: false
-  }
 });
 
 const Game = mongoose.model('Game', gameSchema);
 
 module.exports = Game;
-  

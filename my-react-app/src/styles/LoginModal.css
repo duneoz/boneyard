@@ -90,12 +90,13 @@ input.error + label {
 
 /* Modal Buttons - Equal Width */
 .modal-button {
-  width: 48%; /* Adjust width to make both buttons equal */
+  width: 45%; /* Adjust width to make both buttons equal */
   padding: 1em;
   border-radius: 5px;
   font-size: 1.2rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin: 5px;
 }
 
 .modal-button.submit {
