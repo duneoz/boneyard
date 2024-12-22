@@ -3,53 +3,58 @@ import MakePicksForm from "./MakePicksForm";
 import ConfidenceStep from "./ConfidenceStep";
 import "../styles/PicksModal.css";
 
-const PicksModal = ({ onClose }) => {
-    const [nextStep, setNextStep] = useState(false);
-    const [userPicks, setUserPicks] = useState({}); // Manage user picks
+const PicksModal = ({ onClose, currentUserId, onSaveAndClose }) => {
+  const [nextStep, setNextStep] = useState(false);
+  const [userPicks, setUserPicks] = useState({});
 
-    // Function to handle transition to next step (Confidence Step)
-    const handleNextStep = () => {
-        setNextStep(true); // Move to the next step
-    };
+  // Function to handle transitioning to the Confidence Step
+  const handleNextStep = () => {
+    if (Object.keys(userPicks).length === 0) {
+      alert("Please make your picks before proceeding.");
+      return;
+    }
+    setNextStep(true);
+  };
 
-    return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                {/* Conditionally render MakePicksForm or ConfidenceStep */}
-                {!nextStep ? (
-                    <MakePicksForm
-                        userPicks={userPicks}
-                        setUserPicks={setUserPicks} // Pass setter to MakePicksForm
-                    />
-                ) : (
-                    <ConfidenceStep
-                        userPicks={userPicks}  // Pass userPicks to ConfidenceStep
-                        onClose={onClose}
-                    />
-                )}
+  // Function to collect picks from MakePicksForm
+  const collectPicks = (picks) => {
+    setUserPicks(picks);
+  };
 
-                {/* Footer (Always rendered) */}
-                <div className="modal-footer">
-                    <button
-                        className="next-step-button"
-                        onClick={nextStep ? null : handleNextStep} // Disable button if already at next step
-                    >
-                        {nextStep ? "Save and Close" : "Next Step"}
-                    </button>
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        {/* Conditionally render MakePicksForm or ConfidenceStep */}
+        {!nextStep ? (
+          <MakePicksForm
+            collectPicks={collectPicks} // Pass the collectPicks function to MakePicksForm
+            userPicks={userPicks} // Optional: Pass initial picks if needed
+          />
+        ) : (
+          <ConfidenceStep
+            userPicks={userPicks}
+            onClose={onClose}
+            currentUserId={currentUserId}
+            onSaveAndClose={onSaveAndClose}  // <-- Use `onSaveAndClose` to match the prop
+          />
 
-                    <button className="modal-close-button" onClick={onClose}>
-                        Close
-                    </button>
+        )}
 
-                    {nextStep && (
-                        <button className="save-button" onClick={() => console.log("Saving picks and closing modal")}>
-                            Save and Close
-                        </button>
-                    )}
-                </div>
-            </div>
+        {/* Footer */}
+        <div className="modal-footer">
+          {!nextStep && (
+            <button className="next-step-button" onClick={handleNextStep}>
+              Next Step
+            </button>
+          )}
+
+          <button className="modal-close-button" onClick={onClose}>
+            Close
+          </button>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default PicksModal;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import '../styles/MakePicksForm.css';
 
 const formatDate = (date) => {
@@ -6,9 +7,8 @@ const formatDate = (date) => {
   return new Date(date).toLocaleDateString(undefined, options);
 };
 
-const MakePicksForm = () => {
+const MakePicksForm = ({ collectPicks, userPicks }) => {
   const [games, setGames] = useState([]);
-  const [userPicks, setUserPicks] = useState({});
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -33,21 +33,19 @@ const MakePicksForm = () => {
 
   const updateBracket = (gameId, selectedTeamName) => {
     const selectedGame = games.find((game) => game._id === gameId);
-  
+
     if (!selectedGame) return;
-  
-    // Update the user's pick for the current game
+
     setGames((prevGames) =>
       prevGames.map((game) =>
         game._id === gameId ? { ...game, userPick: selectedTeamName } : game
       )
     );
-  
+
     const updateDownstreamGames = (game, selectedTeamName) => {
       const { nextGameId, nextGameTeam, semiFinalGameId, finalGameId } = game;
-  
+
       if (nextGameId && nextGameTeam) {
-        // Update the next game with the selected team
         setGames((prevGames) =>
           prevGames.map((nextGame) =>
             nextGame._id === nextGameId
@@ -55,15 +53,13 @@ const MakePicksForm = () => {
               : nextGame
           )
         );
-  
+
         const nextGame = games.find((game) => game._id === nextGameId);
         if (nextGame) {
-          // Recursively update games affected by the pick change
           updateDownstreamGames(nextGame, selectedTeamName);
         }
       }
-  
-      // Reset Semi-final games if they depend on this pick
+
       if (semiFinalGameId) {
         setGames((prevGames) =>
           prevGames.map((semiFinalGame) =>
@@ -72,25 +68,19 @@ const MakePicksForm = () => {
                   ...semiFinalGame,
                   team1:
                     semiFinalGame.team1 === selectedTeamName
-                      ? "TBD"
+                      ? 'TBD'
                       : semiFinalGame.team1,
                   team2:
                     semiFinalGame.team2 === selectedTeamName
-                      ? "TBD"
+                      ? 'TBD'
                       : semiFinalGame.team2,
                   userPick: null,
                 }
               : semiFinalGame
           )
         );
-  
-        const semiFinalGame = games.find((game) => game._id === semiFinalGameId);
-        if (semiFinalGame) {
-          updateDownstreamGames(semiFinalGame, selectedTeamName);
-        }
       }
-  
-      // Reset Final game if it depends on this pick
+
       if (finalGameId) {
         setGames((prevGames) =>
           prevGames.map((finalGame) =>
@@ -99,11 +89,11 @@ const MakePicksForm = () => {
                   ...finalGame,
                   team1:
                     finalGame.team1 === selectedTeamName
-                      ? "TBD"
+                      ? 'TBD'
                       : finalGame.team1,
                   team2:
                     finalGame.team2 === selectedTeamName
-                      ? "TBD"
+                      ? 'TBD'
                       : finalGame.team2,
                   userPick: null,
                 }
@@ -112,20 +102,36 @@ const MakePicksForm = () => {
         );
       }
     };
-  
+
     updateDownstreamGames(selectedGame, selectedTeamName);
   };
-  
 
   const handlePick = (gameId, selectedTeamName) => {
+    const selectedGame = games.find((game) => game._id === gameId);
+    if (!selectedGame) return;
+
+    // Create an object to store game details
+    const pickDetails = {
+        gameName: selectedGame.name,
+        spread: selectedGame.spread,
+        selectedTeam: selectedTeamName,
+    };
+
+    // Update the bracket with the selected team
     updateBracket(gameId, selectedTeamName);
-    setUserPicks((prevPicks) => ({ ...prevPicks, [gameId]: selectedTeamName }));
-  };
+
+    // Pass the updated pick to the parent component
+    collectPicks((prevPicks) => ({
+        ...prevPicks,
+        [gameId]: pickDetails, // Store the entire object
+    }));
+};
+
 
   return (
     <div className="make-picks-container">
-      <h1>Step 1: Make Your Picks</h1>
-      <div>Pick the game winners!</div>
+      <h2>Step 1: Make Your Picks</h2>
+      <div>Pick the winner for each bowl game. You are picking the WINNER. Spread is provided strictly for context - you are not picking against the spread! Games that are grayed out have kicked off in the past, so you are no longer able to pick those games.</div>
       <div>
         {games && games.length > 0 ? (
           games.map((game) => (
@@ -139,14 +145,14 @@ const MakePicksForm = () => {
               <p>Kickoff: {formatDate(game.date)}</p>
               <div className="teams-container">
                 <div
-                  className={`team-card ${userPicks[game._id] === game.team1 ? 'selected' : ''}`}
-                  onClick={() => handlePick(game._id, game.team1)}
+                  className={`team-card ${userPicks[game._id]?.selectedTeam === game.team1 ? 'selected' : ''}`}
+                  onClick={() => !game.isLateEntry && handlePick(game._id, game.team1)}
                 >
                   {game.team1}
                 </div>
                 <div
-                  className={`team-card ${userPicks[game._id] === game.team2 ? 'selected' : ''}`}
-                  onClick={() => handlePick(game._id, game.team2)}
+                  className={`team-card ${userPicks[game._id]?.selectedTeam === game.team2 ? 'selected' : ''}`}
+                  onClick={() => !game.isLateEntry && handlePick(game._id, game.team2)}
                 >
                   {game.team2}
                 </div>
@@ -159,6 +165,11 @@ const MakePicksForm = () => {
       </div>
     </div>
   );
+};
+
+MakePicksForm.propTypes = {
+  userPicks: PropTypes.object.isRequired,
+  collectPicks: PropTypes.func.isRequired,
 };
 
 export default MakePicksForm;

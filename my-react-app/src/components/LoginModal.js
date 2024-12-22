@@ -9,10 +9,8 @@ const LogInModal = ({ isOpen, onClose, onLogInSuccess, switchToSignUp, setUserPi
 
   const handleLogIn = async (e) => {
     e.preventDefault();
-
-    // Debug: Check the values being sent
-    console.log({ email, password });
-
+    console.log("Attempting to log in with", { email, password });
+  
     try {
       const response = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
@@ -21,24 +19,26 @@ const LogInModal = ({ isOpen, onClose, onLogInSuccess, switchToSignUp, setUserPi
         },
         body: JSON.stringify({ email, password }),
       });
-
+  
       const data = await response.json();
-      console.log(data); // Add this to see what the server is responding with
-
+      console.log("Login response data:", data); // Log the entire response
+  
       if (response.ok) {
         localStorage.setItem('authToken', data.token);
-        console.log('Login successful!');
-        setUserPicksSubmitted(data.picksSubmitted); // Update state
-        onLogInSuccess();  // Trigger success handler passed from HomePage
+        console.log('Login successful!', data.userId);  // Log the userId
+        setUserPicksSubmitted(data.picksSubmitted);
+        onLogInSuccess(data.userId); // Pass userId up to HomePage
         onClose();  // Close the modal
       } else {
-        setError(data.message); // Display error message
+        setError(data.message);
       }
     } catch (err) {
       console.error('Log in error:', err);
       setError('An unexpected error occurred. Please try again later.');
     }
   };
+  
+  
 
   if (!isOpen) return null;
 

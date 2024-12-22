@@ -4,70 +4,59 @@ import '../styles/HomePage.css';
 import SignUpModal from './SignUpModal';
 import LogInModal from './LogInModal';
 import Header from './Header';
-import PicksModal from './PicksModal'
-// import MakePicksForm from './MakePicksForm';
-// import MakePicksForm from './MakePicksForm';
+import PicksModal from './PicksModal';
+import UserStats from './UserStats'; // Assuming you have this component
+import BowlBashLogo from '../assets/nicks/bb-logo.png';
+import axios from 'axios';
 
 const HomePage = () => {
   const logoContext = require.context('../assets/logos', false, /\.(png|jpe?g|svg)$/);
   const logos = logoContext.keys().map(logoContext);
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLogInModalOpen, setIsLogInModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [picksSubmitted, setPicksSubmitted] = useState(false);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(false); // To control header visibility
-  // const [isMakePicksModalOpen, setMakePicksModalOpen] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(false);
   const [isPicksModalOpen, setPicksModalOpen] = useState(false);
-
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [userStats, setUserStats] = useState(null);
 
   const handlePicksModalClick = () => {
-    // Navigate to the "Make Picks" form or route
     console.log('Navigating to Picks modal...');
-    setPicksModalOpen(true);  // Open the modal
+    setPicksModalOpen(true); // Open the modal
   };
 
   const handleClosePicksModal = () => {
-    setPicksModalOpen(false);  // Close the modal
+    setPicksModalOpen(false); // Close the modal
   };
 
-  // Open Log In Modal
   const handleLogin = () => {
     console.log('Log In button clicked, opening modal...');
     setIsLogInModalOpen(true); // Open Log In modal
   };
 
-  useEffect(() => {
-    console.log('isLogInModalOpen state:', isLogInModalOpen);
-  }, [isLogInModalOpen]);  // This will log every time isLogInModalOpen changes
+  const handleLogInSuccess = async (userId) => {
+    console.log('User logged in successfully! UserID:', userId);
+    setIsLogInModalOpen(false);
+    setIsLoggedIn(true);
+    setIsHeaderVisible(true);
+    setCurrentUserId(userId);
 
-  // Open Sign Up Modal
-  const openModal = () => {
-    console.log('Sign Up button clicked, opening modal...');
-    setIsModalOpen(true);
+    try {
+      const response = await axios.get(`/api/picks/user/${userId}/picks-and-stats`);
+      console.log('User stats response:', response.data);
+
+      setPicksSubmitted(true); // Assume picks are submitted if stats are returned
+      setUserStats(response.data); // Store user stats for UserStats component
+    } catch (error) {
+      console.error('Error fetching user stats:', error);
+    }
   };
 
-  // Close Sign Up Modal
-  const closeModal = () => {
-    console.log('Closing modal...');
-    setIsModalOpen(false);
-  };
-
-  // Close Log In Modal and handle successful login
-  const handleLogInSuccess = () => {
-    console.log('User logged in successfully!');
-    setIsLogInModalOpen(false);  // Close Log In Modal
-    setIsLoggedIn(true);         // Update logged-in state
-    setIsHeaderVisible(true); // Show header upon successful login
-  };
-
-  // const handleOpenModal = () => setIsModalOpen(true);
-  // const handleCloseModal = () => setIsModalOpen(false);
-
-  // Switch to Sign Up modal from Log In modal
   const switchToSignUp = () => {
-    setIsLogInModalOpen(false);  // Close Log In Modal
-    setIsModalOpen(true);        // Open Sign Up Modal
+    setIsLogInModalOpen(false); // Close Log In Modal
+    setIsModalOpen(true); // Open Sign Up Modal
   };
 
   useEffect(() => {
@@ -81,50 +70,73 @@ const HomePage = () => {
     };
   }, []);
 
+  const handleSaveAndClose = () => {
+    setPicksSubmitted(true); // Update the state to hide the "Make Picks" button
+    setPicksModalOpen(false); // Close the Picks Modal
+  };
+
+  const openModal = () => {
+    console.log('Sign Up button clicked, opening modal...');
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    console.log('Closing Sign Up modal...');
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="HomePage">
       {isHeaderVisible && <Header />} {/* Conditionally render header */}
       {!isLoggedIn && (
         <>
           <BackgroundGrid logos={logos} />
+          <div className="logo-container">
+            <img src={BowlBashLogo} alt="Nick's Bowl Bash Logo" className="homepage-logo" />
+          </div>
           <div className="button-container">
-            <button className="home-page-button" type="button" onClick={handleLogin}>Log In</button>
-            <button className="home-page-button" type="button" onClick={openModal}>Sign Up</button>
+            <button className="home-page-button" type="button" onClick={handleLogin}>
+              Log In
+            </button>
+            <button className="home-page-button" type="button" onClick={openModal}>
+              Sign Up
+            </button>
           </div>
         </>
       )}
       {isModalOpen && <SignUpModal closeModal={closeModal} />}
       {isLogInModalOpen && (
-  <>
-    {console.log("Rendering LogInModal")} {/* Add this line */}
-    <LogInModal
-      isOpen={isLogInModalOpen}
-      onClose={() => setIsLogInModalOpen(false)}
-      onLogInSuccess={handleLogInSuccess}
-      switchToSignUp={switchToSignUp}
-      setUserPicksSubmitted={setPicksSubmitted}
-    />
-  </>
-)}
+        <>
+          <LogInModal
+            isOpen={isLogInModalOpen}
+            onClose={() => setIsLogInModalOpen(false)}
+            onLogInSuccess={handleLogInSuccess}
+            switchToSignUp={switchToSignUp}
+            setUserPicksSubmitted={setPicksSubmitted}
+          />
+        </>
+      )}
 
-      {/* {isLoggedIn && <div className="home-page">Welcome to Nick's Bowl Bash 2024!</div>} */}
-
-      {!picksSubmitted ? (
+      {picksSubmitted ? (
+        userStats ? (
+          <UserStats stats={userStats} />
+        ) : (
+          <div className="loading">Loading your stats...</div>
+        )
+      ) : (
         <button onClick={handlePicksModalClick} className="glowing-button">
           Make Picks
         </button>
-      ) : (
-        <div className="picks-table" >
-          {/* Render user picks here */}
-          <p>Your picks will show here.</p>
-        </div>
       )}
 
-      {/* Make Picks Modal */}
       {isPicksModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <PicksModal onClose={handleClosePicksModal} />
+            <PicksModal
+              onClose={handleClosePicksModal}
+              currentUserId={currentUserId}
+              onSaveAndClose={handleSaveAndClose}
+            />
           </div>
         </div>
       )}

@@ -5,10 +5,9 @@ const router = express.Router();
 // Get all games
 router.get('/', async (req, res) => {
   try {
-    const games = await Game.find();
-    res.status(200).json(games);
+    const games = await Game.find().sort({ date: 1 }); // Sort games by date
+    res.json(games);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
 });

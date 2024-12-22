@@ -85,9 +85,12 @@ router.post('/login', async (req, res) => {
       expiresIn: '1h',
     });
 
+    console.log("User object:", user);  // Check the user object
+
     res.status(200).json({
       message: 'Login successful',
       token,
+      userId: user._id, 
       picksSubmitted,  // Include picksSubmitted status in the response
     });
   } catch (err) {
