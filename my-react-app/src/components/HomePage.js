@@ -5,8 +5,9 @@ import SignUpModal from './SignUpModal';
 import LogInModal from './LogInModal';
 import Header from './Header';
 import PicksModal from './PicksModal';
-import UserStats from './UserStats'; // Assuming you have this component
-import BowlBashLogo from '../assets/nicks/bb-logo.png';
+import UserStats from './UserStats';
+import Leaderboard from './Leaderboard';
+import BowlBashLogo from '../assets/nicks/nbb-logo-3.png';
 import axios from 'axios';
 
 const HomePage = () => {
@@ -21,125 +22,123 @@ const HomePage = () => {
   const [isPicksModalOpen, setPicksModalOpen] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [userStats, setUserStats] = useState(null);
+  const [activeComponent, setActiveComponent] = useState("userStats"); // New state for active component
 
   const handlePicksModalClick = () => {
-    console.log('Navigating to Picks modal...');
-    setPicksModalOpen(true); // Open the modal
+    setPicksModalOpen(true);
   };
 
   const handleClosePicksModal = () => {
-    setPicksModalOpen(false); // Close the modal
+    setPicksModalOpen(false);
   };
 
   const handleLogin = () => {
-    console.log('Log In button clicked, opening modal...');
-    setIsLogInModalOpen(true); // Open Log In modal
+    setIsLogInModalOpen(true);
   };
 
   const handleLogInSuccess = async (userId) => {
-    console.log('User logged in successfully! UserID:', userId);
     setIsLogInModalOpen(false);
     setIsLoggedIn(true);
     setIsHeaderVisible(true);
     setCurrentUserId(userId);
+    setActiveComponent("userStats"); // Automatically show UserStats after login
+  };
+
+  useEffect(() => {
+    if (currentUserId) {
+      const fetchUserStats = async () => {
+        try {
+          const response = await axios.get(`http://localhost:5000/api/picks/user/${currentUserId}/picks-and-stats`);
+          setPicksSubmitted(true);
+          setUserStats(response.data);
+        } catch (error) {
+          console.error('Error fetching user stats:', error);
+        }
+      };
+      fetchUserStats();
+    }
+  }, [currentUserId]);
+
+  const handleSaveAndClose = async () => {
+    setPicksSubmitted(true);
+    setPicksModalOpen(false);
 
     try {
-      const response = await axios.get(`/api/picks/user/${userId}/picks-and-stats`);
-      console.log('User stats response:', response.data);
-
-      setPicksSubmitted(true); // Assume picks are submitted if stats are returned
-      setUserStats(response.data); // Store user stats for UserStats component
+      const response = await axios.get(`http://localhost:5000/api/picks/user/${currentUserId}/picks-and-stats`);
+      setUserStats(response.data);
     } catch (error) {
       console.error('Error fetching user stats:', error);
     }
   };
 
-  const switchToSignUp = () => {
-    setIsLogInModalOpen(false); // Close Log In Modal
-    setIsModalOpen(true); // Open Sign Up Modal
-  };
+  const renderActiveComponent = () => {
+    if (!isLoggedIn) {
+      return (
+        <>
+          <BackgroundGrid logos={logos} />
+          <div className="logo-button-container">
+            <div className="logo-container">
+              <img src={BowlBashLogo} alt="Nick's Bowl Bash Logo" className="homepage-logo" />
+            </div>
+            <div className="button-container">
+              <button className="home-page-button" onClick={handleLogin}>
+                Log In
+              </button>
+              <button className="home-page-button" onClick={() => setIsModalOpen(true)}>
+                Sign Up
+              </button>
+            </div>
+          </div>
+        </>
+      );
+    }
 
-  useEffect(() => {
-    console.log('isModalOpen has changed:', isModalOpen);
-  }, [isModalOpen]);
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, []);
-
-  const handleSaveAndClose = () => {
-    setPicksSubmitted(true); // Update the state to hide the "Make Picks" button
-    setPicksModalOpen(false); // Close the Picks Modal
-  };
-
-  const openModal = () => {
-    console.log('Sign Up button clicked, opening modal...');
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    console.log('Closing Sign Up modal...');
-    setIsModalOpen(false);
+    switch (activeComponent) {
+      case "userStats":
+        return picksSubmitted ? (
+          userStats ? <UserStats stats={userStats} /> : <div className="loading">Loading your stats...</div>
+        ) : (
+          <button onClick={handlePicksModalClick} className="glowing-button">
+            Make Picks
+          </button>
+        );
+      case "leaderboard":
+        return <Leaderboard />;
+      default:
+        return null;
+    }
   };
 
   return (
     <div className="HomePage">
-      {isHeaderVisible && <Header />} {/* Conditionally render header */}
-      {!isLoggedIn && (
-        <>
-          <BackgroundGrid logos={logos} />
-          <div className="logo-container">
-            <img src={BowlBashLogo} alt="Nick's Bowl Bash Logo" className="homepage-logo" />
-          </div>
-          <div className="button-container">
-            <button className="home-page-button" type="button" onClick={handleLogin}>
-              Log In
-            </button>
-            <button className="home-page-button" type="button" onClick={openModal}>
-              Sign Up
-            </button>
-          </div>
-        </>
+      {isHeaderVisible && (
+        <Header
+          onSwitch={(component) => setActiveComponent(component)}
+        />
       )}
-      {isModalOpen && <SignUpModal closeModal={closeModal} />}
+      {isModalOpen && <SignUpModal closeModal={() => setIsModalOpen(false)} />}
       {isLogInModalOpen && (
-        <>
-          <LogInModal
-            isOpen={isLogInModalOpen}
-            onClose={() => setIsLogInModalOpen(false)}
-            onLogInSuccess={handleLogInSuccess}
-            switchToSignUp={switchToSignUp}
-            setUserPicksSubmitted={setPicksSubmitted}
-          />
-        </>
+        <LogInModal
+          isOpen={isLogInModalOpen}
+          onClose={() => setIsLogInModalOpen(false)}
+          onLogInSuccess={handleLogInSuccess}
+          switchToSignUp={() => {
+            setIsLogInModalOpen(false);
+            setIsModalOpen(true);
+          }}
+          setUserPicksSubmitted={setPicksSubmitted}
+        />
       )}
-
-      {picksSubmitted ? (
-        userStats ? (
-          <UserStats stats={userStats} />
-        ) : (
-          <div className="loading">Loading your stats...</div>
-        )
-      ) : (
-        <button onClick={handlePicksModalClick} className="glowing-button">
-          Make Picks
-        </button>
-      )}
-
       {isPicksModalOpen && (
         <div className="modal-overlay">
-          <div className="modal-content">
-            <PicksModal
-              onClose={handleClosePicksModal}
-              currentUserId={currentUserId}
-              onSaveAndClose={handleSaveAndClose}
-            />
-          </div>
+          <PicksModal
+            onClose={handleClosePicksModal}
+            currentUserId={currentUserId}
+            onSaveAndClose={handleSaveAndClose}
+          />
         </div>
       )}
+      <main>{renderActiveComponent()}</main>
     </div>
   );
 };

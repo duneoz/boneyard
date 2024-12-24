@@ -9,6 +9,8 @@ dotenv.config();
 const authRoutes = require('./routes/auth');
 const gameRoutes = require('./routes/games');
 const pickRoutes = require('./routes/picks');
+const userStatsRoutes = require('./routes/userstats'); // Adjust path as needed
+
 
 const app = express();
 
@@ -25,6 +27,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/auth', authRoutes);  // Authentication Routes
 app.use('/api/games', gameRoutes); // Game Routes
 app.use('/api/picks', pickRoutes); // Picks Routes
+app.use('/api/userStats', userStatsRoutes); //user Stats Routes
 
 // Server
 const PORT = process.env.PORT || 5000;

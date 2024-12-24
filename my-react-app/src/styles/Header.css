@@ -1,29 +1,69 @@
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background-color: #282c34;
-  color: white;
+  justify-content: flex-start; /* Align all items to the left */
+  background-color: rgb(254, 254, 254);
+  height: 60px;
+  width: 100%;
+  font-size: 14px;
+  padding: 0 20px; /* Add some padding to the left and right */
+}
+
+.header-logo-container {
+  max-width: 60px;
 }
 
 .header h1 {
-  font-size: 1.5rem;
+  font-size: 1.75rem; /* Slightly larger for better readability */
+  font-weight: bold;
+  margin: 0;
+  text-align: left;
+  margin-right: 2rem; /* Add space between title and navigation */
 }
 
 .header nav {
   display: flex;
-  gap: 10px; /* Space between buttons */
+  gap: 1rem; /* Space between buttons for a clean look */
 }
 
-.header nav button {
-  flex-shrink: 0; /* Prevent buttons from shrinking */
+.header nav .nav-button {
+  background-color: transparent; /* Neutral background for buttons */
+  color: rgb(51, 51, 51);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1.25rem; /* Increase padding for better touch targets */
+  border: none;
+  border-radius: 5px; /* Subtle rounding for modern design */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.header nav .nav-button:hover {
+  background-color: rgb(219, 171, 80); /* Slightly lighter on hover for feedback */
+  transform: scale(1.05); /* Subtle scale effect on hover */
+}
+
+.header nav .nav-button:active {
+  transform: scale(0.95); /* Feedback on click */
+}
+
+.header nav .nav-button:focus {
+  outline: 2px solid #61dafb; /* Accessibility: highlight focused buttons */
+  outline-offset: 2px;
 }
 
 @media (max-width: 600px) {
+  .header {
+    flex-direction: column; /* Stack elements vertically on small screens */
+    align-items: flex-start;
+  }
   .header nav {
-    justify-content: center; /* Center buttons on smaller screens */
+    width: 100%; /* Take full width for buttons */
+    justify-content: flex-start; /* Align buttons to the left */
+    gap: 0; /* No gap on smaller screens */
   }
   .header h1 {
-    font-size: 1rem; /* Adjust this value as needed */
-}}
+    font-size: 1.5rem; /* Adjust title size */
+    margin-bottom: 1rem; /* Space below title */
+  }
+}

@@ -1,42 +1,12 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
+import "../styles/UserStats.css";
 
-const UserStats = ({ currentUserId }) => {
-  const [rank, setRank] = useState("Loading...");
-  const [score, setScore] = useState("Loading...");
-  const [userPicks, setUserPicks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchUserStats = async () => {
-        try {
-          setLoading(true);
-          const response = await axios.get(
-            `http://localhost:5000/api/picks/user/${currentUserId}/picks-and-stats`
-          );
-      
-          const { rank, score, picks } = response.data;
-          setRank(rank || "N/A");
-          setScore(score || 0);
-          setUserPicks(picks || []);
-        } catch (err) {
-          console.error("Error fetching user stats:", err);
-          setError("Failed to load user stats. Please try again later.");
-        } finally {
-          setLoading(false);
-        }
-      };
-      
-
-    if (currentUserId) {
-      fetchUserStats();
-    }
-  }, [currentUserId]);
+const UserStats = ({ stats }) => {
+  const { rank = "N/A", score = 0, picks = [] } = stats || {}; // Fallbacks for undefined properties
 
   const renderGameTable = () => {
     return (
-      <table>
+      <table className="user-stats-table">
         <thead>
           <tr>
             <th>Game Name</th>
@@ -48,14 +18,14 @@ const UserStats = ({ currentUserId }) => {
           </tr>
         </thead>
         <tbody>
-          {userPicks.map((pick) => (
-            <tr key={pick._id}>
+          {picks.map((pick, index) => (
+            <tr key={pick._id} className={index % 2 === 0 ? "even-row" : "odd-row"}>
               <td>{pick.gameName}</td>
               <td>{pick.team1}</td>
               <td>{pick.team2}</td>
               <td>{pick.userPick}</td>
-              <td>{pick.pointsWagered}</td>
-              <td>{pick.pointsEarned}</td>
+              <td className="centered">{pick.pointsWagered}</td>
+              <td className="centered">{pick.pointsEarned}</td>
             </tr>
           ))}
         </tbody>
@@ -63,23 +33,21 @@ const UserStats = ({ currentUserId }) => {
     );
   };
 
-  if (loading) {
-    return <p>Loading user stats...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
   return (
-    <div>
-      <div>
-        <h3>Rank: {rank}</h3>
-        <h3>Score: {score}</h3>
+    <div className="user-stats-container">
+      <div className="user-stats-header">
+        <div className="stats-box rank-box">
+          <h3>{rank}</h3>
+          <span>Rank</span>
+        </div>
+        <div className="stats-box score-box">
+          <h3>{score}</h3>
+          <span>Score</span>
+        </div>
       </div>
-      <div>
-        <h4>Your Game Picks</h4>
-        {userPicks.length > 0 ? renderGameTable() : <p>No picks available.</p>}
+      <div className="user-picks-section">
+        <h4 className="picks-heading">Your Game Picks</h4>
+        {picks.length > 0 ? renderGameTable() : <p className="no-picks-message">No picks available.</p>}
       </div>
     </div>
   );

@@ -1,0 +1,63 @@
+/* Leaderboard Container */
+.leaderboard-container {
+    margin: 2rem auto;
+    padding: 1rem;
+    max-width: 800px;
+    border-radius: 12px;
+    background-color: #f3f3f3;
+    box-shadow: 0px 0px 10px rgba(0.3, 0.3, 0.3, 0.3);
+}
+
+.leaderboard-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+/* Table Styles */
+.leaderboard-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.leaderboard-table thead {
+    background-color: #3a3a3a;
+    color: #ffffff;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.leaderboard-table tbody tr:nth-child(even) {
+    background-color: #f7f7f7; /* Alternate even row color */
+}
+
+.leaderboard-table tbody tr:nth-child(odd) {
+    background-color: #eaeaea; /* Alternate odd row color */
+}
+
+.leaderboard-table tbody tr:hover {
+    background-color: #e6f7ff;
+}
+
+/* Loading and Error States */
+.leaderboard-loading,
+.leaderboard-error {
+    text-align: center;
+    font-size: 1.25rem;
+    color: #555;
+    margin: 1rem 0;
+}
+
+.table-wrapper {
+    border-radius: 12px;
+    overflow: hidden; /* Ensures rounded corners */
+}
