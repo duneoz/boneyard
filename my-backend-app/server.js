@@ -10,7 +10,7 @@ const authRoutes = require('./routes/auth');
 const gameRoutes = require('./routes/games');
 const pickRoutes = require('./routes/picks');
 const userStatsRoutes = require('./routes/userstats'); // Adjust path as needed
-
+const myStatsRoutes = require('./routes/mystats');
 
 const app = express();
 
@@ -28,6 +28,7 @@ app.use('/api/auth', authRoutes);  // Authentication Routes
 app.use('/api/games', gameRoutes); // Game Routes
 app.use('/api/picks', pickRoutes); // Picks Routes
 app.use('/api/userStats', userStatsRoutes); //user Stats Routes
+app.use('/api/mystats', myStatsRoutes);
 
 // Server
 const PORT = process.env.PORT || 5000;

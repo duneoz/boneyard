@@ -22,6 +22,7 @@ const HomePage = () => {
   const [isPicksModalOpen, setPicksModalOpen] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [userStats, setUserStats] = useState(null);
+  const [myStats, setMyStats] = useState(null);
   const [username, setUsername] = useState(''); // State for username
   const [activeComponent, setActiveComponent] = useState("userStats"); // New state for active component
 
@@ -67,6 +68,21 @@ const HomePage = () => {
     }
   }, [currentUserId]);
 
+  useEffect(() => {
+    if (currentUserId) {
+      const fetchMyStats = async () => {
+        try {
+          const response = await axios.get(`http://localhost:5000/api/mystats/${currentUserId}`);
+          // setPicksSubmitted(true);
+          setMyStats(response.data);
+        } catch (error) {
+          console.error('Error fetching my stats:', error);
+        }
+      };
+      fetchMyStats();
+    }
+  }, [currentUserId]);
+
   const handleSaveAndClose = async () => {
     setPicksSubmitted(true);
     setPicksModalOpen(false);
@@ -104,7 +120,7 @@ const HomePage = () => {
     switch (activeComponent) {
       case "userStats":
         return picksSubmitted ? (
-          userStats ? <UserStats stats={userStats} /> : <div className="loading">Loading your stats...</div>
+          userStats ? <UserStats stats={userStats} mystats={myStats}/> : <div className="loading">Loading your stats...</div>
         ) : (
           <button onClick={handlePicksModalClick} className="glowing-button">
             Make Picks

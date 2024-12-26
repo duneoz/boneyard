@@ -145,8 +145,8 @@ router.get('/user/:userId/picks-and-stats', async (req, res) => {
     // Return stats along with the username
     res.status(200).json({
       username: user.username, // Include username in the response
-      rank: 'Not Available', // Placeholder
-      score: totalScore,
+      // rank: 'Not Available', // Placeholder
+      // score: totalScore,
       picks: stats,
     });
   } catch (err) {

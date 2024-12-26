@@ -2,12 +2,17 @@ import React from "react";
 import "../styles/UserStats.css";
 
 const formatDate = (date) => {
-  const options = { month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+  const options = { month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" };
   return new Date(date).toLocaleDateString(undefined, options);
 };
 
-const UserStats = ({ stats }) => {
-  const { rank = "N/A", score = 0, picks = [] } = stats || {}; // Fallbacks for undefined properties
+const UserStats = ({ stats, mystats }) => {
+  // Handle cases where mystats or stats might be undefined/null
+  const { picks = [] } = stats || {};
+  const rank = mystats?.rank || "N/A";
+  const score = mystats?.score || "N/A";
+  const conversion = mystats?.conversionRate || "N/A";
+  const available = mystats?.pointsAvailable || "N/A";
 
   const renderGameTable = () => {
     return (
@@ -52,11 +57,11 @@ const UserStats = ({ stats }) => {
           <span>Score</span>
         </div>
         <div className="stats-box conversion-box">
-          <h3>{score}</h3>
+          <h3>{conversion}</h3>
           <span>Conversion Rate</span>
         </div>
         <div className="stats-box available-box">
-          <h3>{score}</h3>
+          <h3>{available}</h3>
           <span>Available</span>
         </div>
       </div>

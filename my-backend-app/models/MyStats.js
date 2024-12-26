@@ -2,11 +2,9 @@ const mongoose = require('mongoose');
 
 const myStatsSchema = new mongoose.Schema(
     {
-        username: { type: String, required: true },
-        kickoff: {type: Date, required:true},
+        userId: { type: mongoose.Schema.Types.ObjectId, required: true },
         rank: { type: Number, required: true },
         score: { type: Number, required: true },
-        pointsWagered: { type: Number, required: true },
         conversionRate: { type: Number, required: true },
         pointsAvailable: { type: Number, required: true },
     },
@@ -14,3 +12,5 @@ const myStatsSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model('MyStats', myStatsSchema);
+
+
