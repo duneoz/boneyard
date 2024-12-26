@@ -14,6 +14,17 @@ const UserStats = ({ stats, mystats }) => {
   const conversion = mystats?.conversionRate || "N/A";
   const available = mystats?.pointsAvailable || "N/A";
 
+  const getCellClass = (userPick, winner) => {
+    if (userPick === winner) return "green-highlight";
+    if (userPick !== winner && winner !== "TBD") return "strikethrough";
+    return "";
+  };
+
+  const getRowClass = (winner) => {
+    if (winner === "TBD") return "gray-italic";
+    return "";
+  };
+
   const renderGameTable = () => {
     return (
       <table className="user-stats-table">
@@ -24,18 +35,23 @@ const UserStats = ({ stats, mystats }) => {
             <th>Team 1</th>
             <th>Team 2</th>
             <th>Your Pick</th>
+            <th>Winner</th>
             <th>Points Wagered</th>
             <th>Points Earned</th>
           </tr>
         </thead>
         <tbody>
           {picks.map((pick, index) => (
-            <tr key={pick._id} className={index % 2 === 0 ? "even-row" : "odd-row"}>
+            <tr
+              key={pick._id}
+              className={`${index % 2 === 0 ? "even-row" : "odd-row"} ${getRowClass(pick.winner)}`}
+            >
               <td>{pick.gameName}</td>
               <td>{formatDate(pick.kickoff)}</td>
               <td>{pick.team1}</td>
               <td>{pick.team2}</td>
-              <td>{pick.userPick}</td>
+              <td className={getCellClass(pick.userPick, pick.winner)}>{pick.userPick}</td>
+              <td>{pick.winner}</td>
               <td className="centered">{pick.pointsWagered}</td>
               <td className="centered">{pick.pointsEarned}</td>
             </tr>
@@ -74,3 +90,4 @@ const UserStats = ({ stats, mystats }) => {
 };
 
 export default UserStats;
+

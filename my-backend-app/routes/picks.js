@@ -126,6 +126,7 @@ router.get('/user/:userId/picks-and-stats', async (req, res) => {
           team1: '$gameDetails.team1',
           team2: '$gameDetails.team2',
           date: '$gameDetails.date',
+          winner: '$gameDetails.winner',
           userPick: '$selectedWinner',
           pointsWagered: '$confidence',
           pointsEarned: {

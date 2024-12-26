@@ -121,3 +121,21 @@
     min-width: 150px;
     max-width: 350px;
   }
+
+  /* Add strikethrough for mismatched picks */
+.strikethrough {
+  text-decoration: line-through;
+}
+
+/* Style rows where the Winner is TBD */
+.gray-italic {
+  font-style: italic;
+  color: gray;
+}
+
+/* Highlight cells when Your Pick matches Winner */
+.green-highlight {
+  background-color: #abf3cc;
+  color: rgb(0, 130, 0);
+  font-weight: bold;
+}
