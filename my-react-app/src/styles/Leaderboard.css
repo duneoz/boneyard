@@ -1,8 +1,8 @@
 /* Leaderboard Container */
 .leaderboard-container {
-    margin: 2rem auto;
-    padding: 1rem;
-    max-width: 800px;
+    margin: 20px auto;
+    /* padding: 1rem; */
+    max-width: 900px;
     border-radius: 12px;
     background-color: #f3f3f3;
     box-shadow: 0px 0px 10px rgba(0.3, 0.3, 0.3, 0.3);

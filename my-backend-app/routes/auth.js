@@ -3,9 +3,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
+const profanityFilterMiddleware = require('../middleware/authmiddleware'); // Adjust the path if necessary
 
 // Sign Up
-router.post('/signup', async (req, res) => {
+router.post('/signup', profanityFilterMiddleware, async (req, res) => {
   const { email, password, username } = req.body;
 
   // Basic validation
@@ -35,7 +36,7 @@ router.post('/signup', async (req, res) => {
       username,
     });
 
-    console.log('Saving new user with password:', password);  // This will log the plain password
+    console.log('Saving new user with password:', password); // Logs plain password (consider removing in production)
     await newUser.save();
 
     // Generate JWT

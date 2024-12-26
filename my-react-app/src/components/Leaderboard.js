@@ -27,8 +27,7 @@ const Leaderboard = () => {
 
   return (
     <div className="leaderboard-container">
-      <h2 className="leaderboard-title">Leaderboard</h2>
-      <div className="table-wrapper">
+      
       <table className="leaderboard-table">
         <thead>
           <tr>
@@ -53,7 +52,7 @@ const Leaderboard = () => {
           ))}
         </tbody>
       </table>
-      </div>
+      
     </div>
   );
 };
