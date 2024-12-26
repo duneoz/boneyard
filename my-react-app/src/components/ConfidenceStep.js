@@ -144,6 +144,9 @@ const ConfidenceStep = ({
         <button className="save-button" onClick={handleSave}>
           Save and Close
         </button>
+        <button className="modal-close-button" onClick={onClose}>
+            Close
+          </button>
       </div>
     </DragDropContext>
   );

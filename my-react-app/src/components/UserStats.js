@@ -1,6 +1,11 @@
 import React from "react";
 import "../styles/UserStats.css";
 
+const formatDate = (date) => {
+  const options = { month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+  return new Date(date).toLocaleDateString(undefined, options);
+};
+
 const UserStats = ({ stats }) => {
   const { rank = "N/A", score = 0, picks = [] } = stats || {}; // Fallbacks for undefined properties
 
@@ -10,6 +15,7 @@ const UserStats = ({ stats }) => {
         <thead>
           <tr>
             <th>Game Name</th>
+            <th>Kickoff</th>
             <th>Team 1</th>
             <th>Team 2</th>
             <th>Your Pick</th>
@@ -21,6 +27,7 @@ const UserStats = ({ stats }) => {
           {picks.map((pick, index) => (
             <tr key={pick._id} className={index % 2 === 0 ? "even-row" : "odd-row"}>
               <td>{pick.gameName}</td>
+              <td>{formatDate(pick.kickoff)}</td>
               <td>{pick.team1}</td>
               <td>{pick.team2}</td>
               <td>{pick.userPick}</td>
@@ -34,7 +41,7 @@ const UserStats = ({ stats }) => {
   };
 
   return (
-    <div className="user-stats-container">
+    <div className="user-stats-component">
       <div className="user-stats-header">
         <div className="stats-box rank-box">
           <h3>{rank}</h3>
@@ -44,9 +51,17 @@ const UserStats = ({ stats }) => {
           <h3>{score}</h3>
           <span>Score</span>
         </div>
+        <div className="stats-box conversion-box">
+          <h3>{score}</h3>
+          <span>Conversion Rate</span>
+        </div>
+        <div className="stats-box available-box">
+          <h3>{score}</h3>
+          <span>Available</span>
+        </div>
       </div>
       <div className="user-picks-section">
-        <h4 className="picks-heading">Your Game Picks</h4>
+        <h4 className="picks-heading">Your Picks</h4>
         {picks.length > 0 ? renderGameTable() : <p className="no-picks-message">No picks available.</p>}
       </div>
     </div>

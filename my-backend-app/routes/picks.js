@@ -102,20 +102,27 @@ router.get('/user/:userId/picks-and-stats', async (req, res) => {
       return res.status(400).json({ message: 'Invalid userId format' });
     }
 
+    // Find user to get the username
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     const stats = await Pick.aggregate([
-      { $match: { userId: new mongoose.Types.ObjectId(userId) } }, // Use 'new' keyword for ObjectId
+      { $match: { userId: new mongoose.Types.ObjectId(userId) } },
       {
         $lookup: {
-          from: 'games', // Join with the games collection
+          from: 'games',
           localField: 'gameId',
           foreignField: '_id',
           as: 'gameDetails',
         },
       },
-      { $unwind: '$gameDetails' }, // Flatten the joined game details
+      { $unwind: '$gameDetails' },
       {
         $project: {
           gameName: '$gameDetails.name',
+          kickoff: '$gameDetails.date',
           team1: '$gameDetails.team1',
           team2: '$gameDetails.team2',
           date: '$gameDetails.date',
@@ -126,6 +133,7 @@ router.get('/user/:userId/picks-and-stats', async (req, res) => {
           },
         },
       },
+      { $sort: { kickoff: 1 } }, // Sort by kickoff date in ascending order
     ]);
 
     if (!stats.length) {
@@ -134,7 +142,9 @@ router.get('/user/:userId/picks-and-stats', async (req, res) => {
 
     const totalScore = stats.reduce((sum, stat) => sum + stat.pointsEarned, 0);
 
+    // Return stats along with the username
     res.status(200).json({
+      username: user.username, // Include username in the response
       rank: 'Not Available', // Placeholder
       score: totalScore,
       picks: stats,
@@ -144,5 +154,6 @@ router.get('/user/:userId/picks-and-stats', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 module.exports = router;

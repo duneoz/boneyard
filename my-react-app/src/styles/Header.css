@@ -1,12 +1,12 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Align all items to the left */
+  justify-content: space-between; /* Use space-between to place logo, nav, and username at the extremes */
   background-color: rgb(254, 254, 254);
   height: 60px;
   width: 100%;
   font-size: 14px;
-  padding: 0 20px; /* Add some padding to the left and right */
+  padding: 0 20px; /* Padding for left and right */
 }
 
 .header-logo-container {
@@ -66,4 +66,11 @@
     font-size: 1.5rem; /* Adjust title size */
     margin-bottom: 1rem; /* Space below title */
   }
+}
+
+.username-display {
+  font-size: 24px;
+  font-weight: bold;
+  color: rgb(219, 171, 80);
+  margin-left: auto; /* Pushes username to the far right */
 }

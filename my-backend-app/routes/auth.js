@@ -54,49 +54,58 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
+  // Normalize email
+  const normalizedEmail = email.toLowerCase();
+
   try {
-    console.log('Login attempt with:', email, password);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Login attempt with:', { email, password });
+    }
 
     // Check if user exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
-      console.log('User not found');
-      return res.status(400).json({ message: 'Invalid credentials' });
+      console.log('User not found or invalid credentials');
+      return res.status(400).json({ message: 'Invalid email or password' });
     }
 
-    console.log('Found user:', user);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Found user:', user);
+    }
 
-    // Log the password comparison in more detail
-    console.log('Password entered by user:', password);
-    console.log('Stored hashed password:', user.password);
-
+    // Check password
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log('Password match result:', isMatch);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Password match result:', isMatch);
+    }
 
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: 'Invalid email or password' });
     }
 
-    // Check if picks are submitted
-    const picksSubmitted = user.picksSubmitted;
-
     // Generate JWT
+    if (!process.env.JWT_SECRET) {
+      throw new Error('JWT_SECRET is not defined');
+    }
+
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
 
-    console.log("User object:", user);  // Check the user object
+    console.log("User login successful:", { userId: user._id, picksSubmitted: user.picksSubmitted, username: user.username });
 
     res.status(200).json({
       message: 'Login successful',
       token,
-      userId: user._id, 
-      picksSubmitted,  // Include picksSubmitted status in the response
+      userId: user._id,
+      username: user.username, // Include username in response
+      picksSubmitted: user.picksSubmitted, // Include picksSubmitted in response
     });
   } catch (err) {
     console.error('Error during login:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 module.exports = router;

@@ -22,6 +22,7 @@ const HomePage = () => {
   const [isPicksModalOpen, setPicksModalOpen] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [userStats, setUserStats] = useState(null);
+  const [username, setUsername] = useState(''); // State for username
   const [activeComponent, setActiveComponent] = useState("userStats"); // New state for active component
 
   const handlePicksModalClick = () => {
@@ -36,12 +37,18 @@ const HomePage = () => {
     setIsLogInModalOpen(true);
   };
 
-  const handleLogInSuccess = async (userId) => {
+  const handleLogInSuccess = async (userId, username) => {
     setIsLogInModalOpen(false);
     setIsLoggedIn(true);
     setIsHeaderVisible(true);
     setCurrentUserId(userId);
     setActiveComponent("userStats"); // Automatically show UserStats after login
+
+      // Pass the username to the header
+    setUserStats((prev) => ({
+      ...prev,
+      username, // Add username to userStats state
+    }));
   };
 
   useEffect(() => {
@@ -51,6 +58,7 @@ const HomePage = () => {
           const response = await axios.get(`http://localhost:5000/api/picks/user/${currentUserId}/picks-and-stats`);
           setPicksSubmitted(true);
           setUserStats(response.data);
+          setUsername(response.data.username); // Set the username from the response
         } catch (error) {
           console.error('Error fetching user stats:', error);
         }
@@ -112,10 +120,11 @@ const HomePage = () => {
   return (
     <div className="HomePage">
       {isHeaderVisible && (
-        <Header
-          onSwitch={(component) => setActiveComponent(component)}
-        />
-      )}
+          <Header
+            onSwitch={(component) => setActiveComponent(component)}
+            username={username} // Pass the username from the userStats
+          />
+        )}
       {isModalOpen && <SignUpModal closeModal={() => setIsModalOpen(false)} />}
       {isLogInModalOpen && (
         <LogInModal

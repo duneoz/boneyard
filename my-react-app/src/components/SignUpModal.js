@@ -14,6 +14,8 @@ const SignUpModal = ({ closeModal }) => {
     e.preventDefault();
     setError('');
 
+    const normalizedEmail = email.toLowerCase();
+
     // Basic validation
     if (password !== confirmPassword) {
       setError("Passwords don't match.");
@@ -26,7 +28,7 @@ const SignUpModal = ({ closeModal }) => {
     try {
       console.log('Sending sign-up request...');
       const response = await axios.post('http://localhost:5000/api/auth/signup', {
-        email,
+        email: normalizedEmail, // Use `email` key, not `normalizedEmail`
         username,
         password,
       });

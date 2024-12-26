@@ -27,7 +27,7 @@ const LogInModal = ({ isOpen, onClose, onLogInSuccess, switchToSignUp, setUserPi
         localStorage.setItem('authToken', data.token);
         console.log('Login successful!', data.userId);  // Log the userId
         setUserPicksSubmitted(data.picksSubmitted);
-        onLogInSuccess(data.userId); // Pass userId up to HomePage
+        onLogInSuccess(data.userId, data.username); // Pass userId up to HomePage
         onClose();  // Close the modal
       } else {
         setError(data.message);

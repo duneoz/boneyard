@@ -141,8 +141,8 @@ const MakePicksForm = ({ collectPicks, userPicks }) => {
               style={{ opacity: game.isLateEntry ? 0.5 : 1 }}
             >
               <h3>{game.name}</h3>
-              <p>Spread: {game.spread}</p>
-              <p>Kickoff: {formatDate(game.date)}</p>
+              <div>Spread: {game.spread}</div>
+              <div>Kickoff: {formatDate(game.date)}</div>
               <div className="teams-container">
                 <div
                   className={`team-card ${userPicks[game._id]?.selectedTeam === game.team1 ? 'selected' : ''}`}

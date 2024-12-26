@@ -47,10 +47,12 @@ const PicksModal = ({ onClose, currentUserId, onSaveAndClose }) => {
               Next Step
             </button>
           )}
-
-          <button className="modal-close-button" onClick={onClose}>
+          
+          {!nextStep && (
+            <button className="modal-close-button" onClick={onClose}>
             Close
           </button>
+          )}
         </div>
       </div>
     </div>

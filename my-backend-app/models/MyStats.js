@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userStatsSchema = new mongoose.Schema(
+const myStatsSchema = new mongoose.Schema(
     {
         username: { type: String, required: true },
         kickoff: {type: Date, required:true},
@@ -13,4 +13,4 @@ const userStatsSchema = new mongoose.Schema(
     { collection: 'userStats' } // Explicit collection name
 );
 
-module.exports = mongoose.model('UserStats', userStatsSchema);
+module.exports = mongoose.model('MyStats', myStatsSchema);

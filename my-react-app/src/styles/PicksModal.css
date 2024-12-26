@@ -40,6 +40,7 @@
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s;
+    margin-top: 20px;
 }
 
 .modal-close-button:hover {
@@ -53,6 +54,7 @@
     align-items: center; /* Vertically center buttons */
     /* padding: 1rem; */
     width: 100%;
+    margin-top: 0px;    
 }
 
 /* Button styles */
@@ -62,7 +64,8 @@
 .modal-close-button {
     padding: 8px 12px;
     border: none;
-    margin: 0 10px; /* Add space between buttons */
+    margin-left: 10px; /* Add space between buttons */
+    margin-right: 10px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
@@ -72,6 +75,7 @@
 
 /* Next Step button */
 .next-step-button {
+    margin-top: 20px;
     background-color: #007bff;
     color: white;
 }
