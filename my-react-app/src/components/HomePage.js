@@ -9,6 +9,7 @@ import UserStats from './UserStats';
 import Leaderboard from './Leaderboard';
 import BowlBashLogo from '../assets/nicks/nbb-logo-3.png';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const HomePage = () => {
   const logoContext = require.context('../assets/logos', false, /\.(png|jpe?g|svg)$/);
@@ -44,6 +45,8 @@ const HomePage = () => {
     setIsHeaderVisible(true);
     setCurrentUserId(userId);
     setActiveComponent("userStats"); // Automatically show UserStats after login
+
+    toast.success('Log In successful!');
 
       // Pass the username to the header
     setUserStats((prev) => ({

@@ -37,6 +37,7 @@ const Leaderboard = () => {
             <th>Points Wagered</th>
             <th>Conversion Rate</th>
             <th>Points Available</th>
+            <th>Potential Score</th>
           </tr>
         </thead>
         <tbody>
@@ -48,6 +49,7 @@ const Leaderboard = () => {
               <td>{user.pointsWagered}</td>
               <td>{user.conversionRate}</td>
               <td>{user.pointsAvailable}</td>
+              <td>{user.score + user.pointsAvailable}</td>
             </tr>
           ))}
         </tbody>

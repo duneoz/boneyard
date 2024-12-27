@@ -2,7 +2,7 @@
 .leaderboard-container {
     margin: 20px auto;
     /* padding: 1rem; */
-    max-width: 900px;
+    max-width: 1100px;
     border-radius: 12px;
     background-color: #f3f3f3;
     box-shadow: 0px 0px 10px rgba(0.3, 0.3, 0.3, 0.3);
@@ -31,9 +31,19 @@
 }
 
 .leaderboard-table th,
-.leaderboard-table td {
+.leaderboard-table td:nth-child(1),
+.leaderboard-table td:nth-child(3),
+.leaderboard-table td:nth-child(4),
+.leaderboard-table td:nth-child(5),
+.leaderboard-table td:nth-child(6),
+.leaderboard-table td:nth-child(7) {
     padding: 0.75rem;
     text-align: center;
+}
+
+.leaderboard-table td:nth-child(1), {
+    padding: 0.75rem;
+    text-align: left;
 }
 
 .leaderboard-table tbody tr:nth-child(even) {
@@ -61,3 +71,5 @@
     border-radius: 12px;
     overflow: hidden; /* Ensures rounded corners */
 }
+
+

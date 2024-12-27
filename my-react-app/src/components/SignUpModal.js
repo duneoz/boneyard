@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/SignUpModal.css';
+import { toast } from 'react-toastify';
 
 const SignUpModal = ({ closeModal }) => {
   const [email, setEmail] = useState('');
@@ -13,6 +14,8 @@ const SignUpModal = ({ closeModal }) => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     setError('');
+
+    
 
     const normalizedEmail = email.toLowerCase();
 
@@ -40,6 +43,8 @@ const SignUpModal = ({ closeModal }) => {
         localStorage.setItem('authToken', response.data.token);
         console.log('Sign-up successful, closing modal...');
         closeModal(); // Close the modal after successful sign-up
+        // Successful sign-up example
+        toast.success('Sign up successful! Please Log In.');
       } else {
         setError(response.data.message); // Show any error from the backend
       }

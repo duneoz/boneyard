@@ -48,7 +48,7 @@
 }
 
 .header nav .nav-button:focus {
-  outline: 2px solid #61dafb; /* Accessibility: highlight focused buttons */
+  outline: 2px solid rgb(219, 171, 80); /* Accessibility: highlight focused buttons */
   outline-offset: 2px;
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "../styles/ConfidenceStep.css"; // Ensure styles are updated
+import { toast } from 'react-toastify';
 
 const ConfidenceStep = ({ 
   userPicks, 
@@ -57,6 +58,9 @@ const ConfidenceStep = ({
 
       if (response.ok) {
         console.log("Picks submitted successfully");
+
+        // Successful picks submission example
+        toast.success('Picks submitted successfully!');
 
         // Trigger the handleSaveAndClose from the parent (HomePage.js)
         onSaveAndClose();
