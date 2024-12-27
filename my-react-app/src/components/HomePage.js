@@ -44,6 +44,7 @@ const HomePage = () => {
     setIsLoggedIn(true);
     setIsHeaderVisible(true);
     setCurrentUserId(userId);
+    setUsername(username); // Update the username state directly
     setActiveComponent("userStats"); // Automatically show UserStats after login
 
     toast.success('Log In successful!');
