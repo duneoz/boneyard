@@ -1,13 +1,14 @@
 /* Leaderboard Container */
 .leaderboard-container {
     margin: 20px auto;
-    /* padding: 1rem; */
     max-width: 1100px;
     border-radius: 12px;
-    background-color: #f3f3f3;
-    box-shadow: 0px 0px 10px rgba(0.3, 0.3, 0.3, 0.3);
+    background-color: #ffffff;
+    /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); */
+    padding: 1rem;
 }
 
+/* Leaderboard Title */
 .leaderboard-title {
     text-align: center;
     font-size: 1.5rem;
@@ -23,6 +24,8 @@
     border-spacing: 0;
     border-radius: 12px;
     overflow: hidden;
+    margin: 0 auto;
+    box-shadow: 0px 0px 10px rgba(0.3, 0.3, 0.3, 0.3);
 }
 
 .leaderboard-table thead {
@@ -31,18 +34,13 @@
 }
 
 .leaderboard-table th,
-.leaderboard-table td:nth-child(1),
-.leaderboard-table td:nth-child(3),
-.leaderboard-table td:nth-child(4),
-.leaderboard-table td:nth-child(5),
-.leaderboard-table td:nth-child(6),
-.leaderboard-table td:nth-child(7) {
+.leaderboard-table td {
     padding: 0.75rem;
     text-align: center;
+    font-size: 0.9rem;
 }
 
-.leaderboard-table td:nth-child(1), {
-    padding: 0.75rem;
+.leaderboard-table td:nth-child(2) {
     text-align: left;
 }
 
@@ -56,6 +54,24 @@
 
 .leaderboard-table tbody tr:hover {
     background-color: #e6f7ff;
+    cursor: pointer;
+}
+
+/* Expandable Row Content */
+.expanded-row {
+    background-color: #ffffff;
+}
+
+.expanded-content {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+    color: #333;
+    text-align: left;
+    border-top: 1px solid #ddd;
+}
+
+.expanded-content p {
+    margin: 0.25rem 0;
 }
 
 /* Loading and Error States */
@@ -67,9 +83,62 @@
     margin: 1rem 0;
 }
 
-.table-wrapper {
-    border-radius: 12px;
-    overflow: hidden; /* Ensures rounded corners */
+/* Media Queries */
+
+/* Mobile (max-width: 600px) */
+@media (max-width: 600px) {
+    .leaderboard-container {
+        padding: 1rem;
+    }
+
+    .leaderboard-table th:nth-child(4),
+    .leaderboard-table td:nth-child(4),
+    .leaderboard-table th:nth-child(5),
+    .leaderboard-table td:nth-child(5),
+    .leaderboard-table th:nth-child(6),
+    .leaderboard-table td:nth-child(6),{
+        display: none;
+    }
+
+    /* Expandable row button */
+    .leaderboard-table tbody tr {
+        position: relative;
+    }
+
+    .leaderboard-table tbody tr:hover {
+        background-color: #f0f8ff; /* Slightly different hover color for mobile */
+    }
+
+    .expanded-row td {
+        padding: 0.5rem;
+        background-color: white;
+    }
+
+    .expanded-content {
+        font-size: 0.8rem;
+        color: #555;
+    }
+
+    /* Table Headers */
+    .leaderboard-table th,
+    .leaderboard-table td {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+    }
+
+    .bold-label {
+        font-weight: bold;
+      }
 }
 
+/* Desktop (min-width: 800px) */
+@media (min-width: 800px) {
+    .leaderboard-table th,
+    .leaderboard-table td {
+        font-size: 1rem;
+    }
 
+    .leaderboard-container {
+        padding: 1.5rem;
+    }
+}
