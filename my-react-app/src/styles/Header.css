@@ -33,7 +33,7 @@
 }
 
 .divider{
-  width:15px;
+  width:px;
   height:auto;
   display:inline-block;
 }
@@ -96,7 +96,7 @@
     display: flex;
     align-items: center;
     position: relative; /* Needed for absolute positioning of the menu */
-    width: 35%; /* Ensure nav takes full width */
+    width: 45%; /* Ensure nav takes full width */
   }
 
   /* Hide the nav-items by default on mobile */
@@ -129,7 +129,7 @@
   /* Show hamburger button only on mobile */
   .header nav .hamburger {
     display: block; /* Visible on mobile */
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     border: none;
     background: transparent;
     color: rgb(51, 51, 51);

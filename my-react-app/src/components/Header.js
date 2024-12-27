@@ -29,6 +29,12 @@ const Header = ({ onSwitch, username }) => {
     };
   }, []);
 
+  // Handle navigation button click and close the menu
+  const handleNavClick = (page) => {
+    onSwitch(page);  // Trigger the onSwitch function with the selected page
+    setIsNavOpen(false); // Close the menu
+  };
+
   return (
     <header className="header">
       <div className="header-logo-container">
@@ -47,11 +53,11 @@ const Header = ({ onSwitch, username }) => {
           ref={navItemsRef} // Attach the ref to nav-items
           className={`nav-items ${isNavOpen ? 'active' : ''}`}
         >
-          <button className="nav-button" onClick={() => onSwitch("userStats")}>
+          <button className="nav-button" onClick={() => handleNavClick("userStats")}>
             Home
           </button>
-          <div class="divider"/>
-          <button className="nav-button" onClick={() => onSwitch("leaderboard")}>
+          <div className="divider"/>
+          <button className="nav-button" onClick={() => handleNavClick("leaderboard")}>
             Leaderboard
           </button>
         </div>
