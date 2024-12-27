@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa"; // Importing chevron icons
 import "../styles/Leaderboard.css";
 
 const Leaderboard = () => {
@@ -61,7 +62,12 @@ const Leaderboard = () => {
                 className={`leaderboard-row ${expandedRow === index ? "expanded" : ""}`}
                 onClick={() => handleRowClick(index)}
               >
-                <td>{user.rank}</td>
+                <td>
+                  <span className="expand-icon">
+                    {isMobile && (expandedRow === index ? <FaChevronUp /> : <FaChevronDown />)}
+                  </span>
+                  {user.rank}
+                </td>
                 <td>{user.username}</td>
                 <td>{user.score}</td>
                 {!isMobile && <td>{user.pointsWagered}</td>}
@@ -71,11 +77,20 @@ const Leaderboard = () => {
               </tr>
               {isMobile && expandedRow === index && (
                 <tr className="expanded-row">
-                  <td colSpan="4">
+                  <td colSpan="6">
                     <div className="expanded-content">
-                      <p><span className="bold-label">Points Wagered: </span>{user.pointsWagered}</p>
-                      <p><span className="bold-label">Conversion Rate: </span>{user.conversionRate}</p>
-                      <p><span className="bold-label">Points Available: </span>{user.pointsAvailable}</p>
+                      <p>
+                        <span className="bold-label">Points Wagered: </span>
+                        {user.pointsWagered}
+                      </p>
+                      <p>
+                        <span className="bold-label">Conversion Rate: </span>
+                        {user.conversionRate}
+                      </p>
+                      <p>
+                        <span className="bold-label">Points Available: </span>
+                        {user.pointsAvailable}
+                      </p>
                     </div>
                   </td>
                 </tr>

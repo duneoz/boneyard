@@ -96,7 +96,7 @@
     .leaderboard-table th:nth-child(5),
     .leaderboard-table td:nth-child(5),
     .leaderboard-table th:nth-child(6),
-    .leaderboard-table td:nth-child(6),{
+    .leaderboard-table td:nth-child(6){
         display: none;
     }
 
@@ -131,7 +131,7 @@
       }
 }
 
-/* Desktop (min-width: 800px) */
+/* Desktop (min-width: 800px)
 @media (min-width: 800px) {
     .leaderboard-table th,
     .leaderboard-table td {
@@ -141,4 +141,4 @@
     .leaderboard-container {
         padding: 1.5rem;
     }
-}
+} */
