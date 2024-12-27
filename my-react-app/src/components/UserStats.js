@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/UserStats.css";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa"; // Importing chevron icons
 
 const formatDate = (date) => {
   const options = { month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" };
@@ -82,7 +83,12 @@ const UserStats = ({ stats, mystats }) => {
                     onClick={() => handleRowClick(index)}
                     className={`${index % 2 === 0 ? "even-row" : "odd-row"} ${getRowClass(pick.winner)}`}
                   >
-                    <td>{pick.gameName}</td>
+                    <td>
+                      <span className="expand-icon">
+                        {expandedRow === index ? <FaChevronUp /> : <FaChevronDown />}
+                      </span>
+                      {pick.gameName}
+                    </td>
                     <td>{formatDate(pick.kickoff)}</td>
                     <td>{pick.team1}</td>
                     <td>{pick.team2}</td>
@@ -97,10 +103,11 @@ const UserStats = ({ stats, mystats }) => {
                     <tr className="expanded-row">
                       <td colSpan="8">
                         <div className="expanded-content">
-                          <div>{pick.team1} vs {pick.team2}</div>
-                          <div>{formatDate(pick.kickoff)}</div>
-                          <div>Points Wagered: {pick.pointsWagered}</div>
-                          <div>Points Earned: {pick.pointsEarned}</div>
+                          <div className="team-info">{pick.team1} vs {pick.team2}</div>
+                          <div className="date-info">{formatDate(pick.kickoff)}</div>
+                          <div className="table-divider"></div>
+                          <div> <span className="bold-label">Points Wagered: </span>{pick.pointsWagered}</div>
+                          <div> <span className="bold-label">Points Earned: </span>{pick.pointsEarned}</div>
                         </div>
                       </td>
                     </tr>

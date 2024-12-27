@@ -159,8 +159,10 @@
   }
 
   .username-display {
-    font-size: 1rem;
-    margin-top: 10px;
+    font-size: 1.2rem;
+    /* margin-top: 10px; */
     align-self: flex-start;
+    padding-right: 10px;
+    margin: auto 0px;
   }
 }

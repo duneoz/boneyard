@@ -247,6 +247,27 @@ td:nth-child(6) {
   .user-stats-table tr {
     cursor: pointer;
   }
+
+  .expand-icon {
+    margin-right: .5rem;
+  }
+
+  .table-divider{
+    height: .5rem;
+  }
+
+  .team-info {
+    font-weight: bold;
+    font-size: 15px;
+  }
+  
+  .date-info {
+    font-style: italic;
+  }
+
+  .bold-label {
+    font-weight: bold;
+  }
 }
 
 /* Large screens (laptops and desktops, min-width: 800px) */
