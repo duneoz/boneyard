@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/UserStats.css";
 
 const formatDate = (date) => {
@@ -7,12 +7,30 @@ const formatDate = (date) => {
 };
 
 const UserStats = ({ stats, mystats }) => {
-  // Handle cases where mystats or stats might be undefined/null
   const { picks = [] } = stats || {};
   const rank = mystats?.rank || "N/A";
   const score = mystats?.score || "N/A";
   const conversion = mystats?.conversionRate || "N/A";
   const available = mystats?.pointsAvailable || "N/A";
+
+  const [expandedRow, setExpandedRow] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600); // Detect mobile view
+
+  // Update isMobile on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 600);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleRowClick = (index) => {
+    // Enable expand/collapse only on mobile
+    if (isMobile) {
+      setExpandedRow(expandedRow === index ? null : index);
+    }
+  };
 
   const getCellClass = (userPick, winner) => {
     if (userPick === winner) return "green-highlight";
@@ -42,19 +60,54 @@ const UserStats = ({ stats, mystats }) => {
         </thead>
         <tbody>
           {picks.map((pick, index) => (
-            <tr
-              key={pick._id}
-              className={`${index % 2 === 0 ? "even-row" : "odd-row"} ${getRowClass(pick.winner)}`}
-            >
-              <td>{pick.gameName}</td>
-              <td>{formatDate(pick.kickoff)}</td>
-              <td>{pick.team1}</td>
-              <td>{pick.team2}</td>
-              <td className={getCellClass(pick.userPick, pick.winner)}>{pick.userPick}</td>
-              <td>{pick.winner}</td>
-              <td className="centered">{pick.pointsWagered}</td>
-              <td className="centered">{pick.pointsEarned}</td>
-            </tr>
+            <React.Fragment key={pick._id}>
+              {/* Normal row on desktop */}
+              {!isMobile && (
+                <tr className={`${index % 2 === 0 ? "even-row" : "odd-row"} ${getRowClass(pick.winner)}`}>
+                  <td>{pick.gameName}</td>
+                  <td>{formatDate(pick.kickoff)}</td>
+                  <td>{pick.team1}</td>
+                  <td>{pick.team2}</td>
+                  <td className={getCellClass(pick.userPick, pick.winner)}>{pick.userPick}</td>
+                  <td>{pick.winner}</td>
+                  <td className="centered">{pick.pointsWagered}</td>
+                  <td className="centered">{pick.pointsEarned}</td>
+                </tr>
+              )}
+
+              {/* Expandable row on mobile */}
+              {isMobile && (
+                <>
+                  <tr
+                    onClick={() => handleRowClick(index)}
+                    className={`${index % 2 === 0 ? "even-row" : "odd-row"} ${getRowClass(pick.winner)}`}
+                  >
+                    <td>{pick.gameName}</td>
+                    <td>{formatDate(pick.kickoff)}</td>
+                    <td>{pick.team1}</td>
+                    <td>{pick.team2}</td>
+                    <td className={getCellClass(pick.userPick, pick.winner)}>{pick.userPick}</td>
+                    <td>{pick.winner}</td>
+                    <td className="centered">{pick.pointsWagered}</td>
+                    <td className="centered">{pick.pointsEarned}</td>
+                  </tr>
+
+                  {/* Expanded content */}
+                  {expandedRow === index && (
+                    <tr className="expanded-row">
+                      <td colSpan="8">
+                        <div className="expanded-content">
+                          <div>{pick.team1} vs {pick.team2}</div>
+                          <div>{formatDate(pick.kickoff)}</div>
+                          <div>Points Wagered: {pick.pointsWagered}</div>
+                          <div>Points Earned: {pick.pointsEarned}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </>
+              )}
+            </React.Fragment>
           ))}
         </tbody>
       </table>
@@ -90,4 +143,3 @@ const UserStats = ({ stats, mystats }) => {
 };
 
 export default UserStats;
-

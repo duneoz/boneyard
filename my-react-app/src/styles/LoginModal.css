@@ -149,4 +149,26 @@ h2 {
   button {
     font-size: 1rem;
   }
+
+/* Modal Content */
+.modal-content {
+  background: white;
+  padding: 2em;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 400px; /* Limit max width for larger screens */
+  text-align: center;
+  box-sizing: border-box; /* Ensure padding doesn't overflow */
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Allow space between form fields and footer */
+  height: auto;
+  z-index: 1001;
+  margin: 20px;
+}
+
+
+
 }

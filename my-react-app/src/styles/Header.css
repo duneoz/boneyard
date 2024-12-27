@@ -1,12 +1,12 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Use space-between to place logo, nav, and username at the extremes */
+  justify-content: space-between;
   background-color: rgb(254, 254, 254);
   height: 60px;
   width: 100%;
   font-size: 14px;
-  padding: 0 20px; /* Padding for left and right */
+  padding: 0 20px;
 }
 
 .header-logo-container {
@@ -14,63 +14,153 @@
 }
 
 .header h1 {
-  font-size: 1.75rem; /* Slightly larger for better readability */
+  font-size: 1.75rem;
   font-weight: bold;
   margin: 0;
   text-align: left;
-  margin-right: 2rem; /* Add space between title and navigation */
+  margin-right: 2rem;
+}
+
+.hamburger {
+  display: none;
 }
 
 .header nav {
   display: flex;
-  gap: 1rem; /* Space between buttons for a clean look */
+  gap: 5rem;
+  align-items: center;
+  width: auto; /* Let the navigation take up natural space */
+}
+
+.divider{
+  width:5px;
+  height:auto;
+  display:inline-block;
 }
 
 .header nav .nav-button {
-  background-color: transparent; /* Neutral background for buttons */
+  background-color: transparent;
   color: rgb(51, 51, 51);
   font-size: 1rem;
   font-weight: 500;
-  padding: 0.5rem 1.25rem; /* Increase padding for better touch targets */
+  padding: 0.5rem 1.25rem;
   border: none;
-  border-radius: 5px; /* Subtle rounding for modern design */
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .header nav .nav-button:hover {
-  background-color: rgb(219, 171, 80); /* Slightly lighter on hover for feedback */
-  transform: scale(1.05); /* Subtle scale effect on hover */
+  background-color: rgb(219, 171, 80);
+  transform: scale(1.05);
 }
 
 .header nav .nav-button:active {
-  transform: scale(0.95); /* Feedback on click */
+  transform: scale(0.95);
 }
 
 .header nav .nav-button:focus {
-  outline: 2px solid rgb(219, 171, 80); /* Accessibility: highlight focused buttons */
+  outline: 2px solid rgb(219, 171, 80);
   outline-offset: 2px;
-}
-
-@media (max-width: 600px) {
-  .header {
-    flex-direction: column; /* Stack elements vertically on small screens */
-    align-items: flex-start;
-  }
-  .header nav {
-    width: 100%; /* Take full width for buttons */
-    justify-content: flex-start; /* Align buttons to the left */
-    gap: 0; /* No gap on smaller screens */
-  }
-  .header h1 {
-    font-size: 1.5rem; /* Adjust title size */
-    margin-bottom: 1rem; /* Space below title */
-  }
 }
 
 .username-display {
   font-size: 24px;
   font-weight: bold;
   color: rgb(219, 171, 80);
-  margin-left: auto; /* Pushes username to the far right */
+  margin-left: auto;
+}
+
+/* Mobile - Hamburger Menu and Navigation */
+@media (max-width: 600px) {
+  .header {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-logo-container {
+    max-width: 50px; /* Scale down logo for mobile */
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    text-align: left;
+  }
+
+  .header nav {
+    display: flex;
+    align-items: center;
+    position: relative; /* Needed for absolute positioning of the menu */
+    width: 35%; /* Ensure nav takes full width */
+  }
+
+  /* Hide the nav-items by default on mobile */
+  .header nav .nav-items {
+    display: none; /* Initially hidden */
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: -40%;
+    width: 130%; /* Ensure full width on mobile */
+    padding: 10px 20px;
+    gap: 1rem;
+    background-color: rgb(254, 254, 254); /* Same background as header */
+    z-index: 2;
+  }
+
+  /* Display nav items when active */
+  .header nav .nav-items.active {
+    display: flex; /* Show when the hamburger is clicked */
+  }
+
+  .header nav .nav-button {
+    font-size: 1.25rem;
+    padding: 0.5rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Show hamburger button only on mobile */
+  .header nav .hamburger {
+    display: block; /* Visible on mobile */
+    font-size: 1.5rem;
+    border: none;
+    background: transparent;
+    color: rgb(51, 51, 51);
+    cursor: pointer;
+  }
+
+  /* Backdrop styles */
+  .backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark overlay */
+    z-index: 1; /* Place behind the nav items */
+  }
+
+  .divider{
+    display: none;
+  }
+
+  /* Hide hamburger button on desktop */
+  @media (min-width: 601px) {
+    .header nav .hamburger {
+      display: none;
+    }
+  }
+
+  .username-display {
+    font-size: 1rem;
+    margin-top: 10px;
+    align-self: flex-start;
+  }
 }

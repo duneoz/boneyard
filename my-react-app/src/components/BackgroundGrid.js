@@ -64,6 +64,7 @@ const BackgroundGrid = ({ logos }) => {
   }, [logos]); // Depend on logos to regenerate grid if logos change
 
   return (
+    <div className="background-grid-wrapper">
     <div className="background-grid">
       {gridItems.map((item) => (
         <img
@@ -77,6 +78,7 @@ const BackgroundGrid = ({ logos }) => {
           }}
         />
       ))}
+    </div>
     </div>
   );
 };

@@ -1,11 +1,12 @@
 /* Center the logo and buttons on the screen */
 .logo-button-container {
   display: flex;
-  flex-direction: column; /* Arrange the logo and buttons vertically */
+  flex-direction: column; /* Stack logo and buttons */
   align-items: center; /* Center horizontally */
   justify-content: center; /* Center vertically */
   height: 100vh; /* Full height of the viewport */
-  /* gap: 20px; Add spacing between the logo and buttons */
+  z-index: 10; /* Ensure it is above the background grid */
+  position: relative; /* Allow interaction with z-index */
 }
 
 /* Logo container remains the same */
