@@ -3,10 +3,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
-const profanityFilterMiddleware = require('../middleware/authmiddleware'); // Adjust the path if necessary
+const cors = require('cors'); // Make sure to use CORS
+
+// Enable CORS for all requests (for development)
+router.use(cors());
 
 // Sign Up
-router.post('/signup', profanityFilterMiddleware, async (req, res) => {
+router.post('/signup', async (req, res) => {
   const { email, password, username } = req.body;
 
   // Basic validation
@@ -36,7 +39,6 @@ router.post('/signup', profanityFilterMiddleware, async (req, res) => {
       username,
     });
 
-    console.log('Saving new user with password:', password); // Logs plain password (consider removing in production)
     await newUser.save();
 
     // Generate JWT
@@ -46,7 +48,7 @@ router.post('/signup', profanityFilterMiddleware, async (req, res) => {
 
     res.status(201).json({ message: 'User created successfully', token });
   } catch (err) {
-    console.error(err);
+    console.error('Error creating user:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -68,10 +70,6 @@ router.post('/login', async (req, res) => {
     if (!user) {
       console.log('User not found or invalid credentials');
       return res.status(400).json({ message: 'Invalid email or password' });
-    }
-
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Found user:', user);
     }
 
     // Check password
@@ -107,6 +105,5 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-
 
 module.exports = router;

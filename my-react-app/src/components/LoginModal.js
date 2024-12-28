@@ -5,24 +5,29 @@ const LogInModal = ({ isOpen, onClose, onLogInSuccess, switchToSignUp, setUserPi
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  
+
+  // Determine the correct API URL based on the environment
+  const apiUrl =
+    process.env.NODE_ENV === 'production'
+      ? 'https://bowl-bash.herokuapp.com/api/auth/login' // Replace with your Heroku app URL
+      : 'http://localhost:5000/api/auth/login';
 
   const handleLogIn = async (e) => {
     e.preventDefault();
-    console.log("Attempting to log in with", { email, password });
-  
+    console.log('Attempting to log in with', { email, password });
+
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       });
-  
+
       const data = await response.json();
-      console.log("Login response data:", data); // Log the entire response
-  
+      console.log('Login response data:', data); // Log the entire response
+
       if (response.ok) {
         localStorage.setItem('authToken', data.token);
         console.log('Login successful!', data.userId);  // Log the userId
@@ -37,8 +42,6 @@ const LogInModal = ({ isOpen, onClose, onLogInSuccess, switchToSignUp, setUserPi
       setError('An unexpected error occurred. Please try again later.');
     }
   };
-  
-  
 
   if (!isOpen) return null;
 
