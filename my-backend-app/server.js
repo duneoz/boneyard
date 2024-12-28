@@ -37,10 +37,9 @@ app.use('/api/mystats', myStatsRoutes); // My Stats Routes
 
 // Serve React static files after API routes
 if (process.env.NODE_ENV === 'production') {
-  const buildPath = path.join(__dirname, '../my-react-app/build'); // Adjust path to your React build folder
+  const buildPath = path.resolve(__dirname, '../my-react-app/build'); // Use path.resolve for consistent cross-platform paths
   app.use(express.static(buildPath));
 
-  // Serve index.html for non-API routes (handles React's client-side routing)
   app.get('*', (req, res) => {
     res.sendFile(path.join(buildPath, 'index.html'));
   });
