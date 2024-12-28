@@ -2,7 +2,8 @@
   "scripts": {
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "start:frontend": "cd my-react-app && npm start",
-    "start:backend": "cd my-backend-app && node server.js"
+    "start:backend": "cd my-backend-app && node server.js",
+    "heroku-postbuild": "npm install --dev"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
