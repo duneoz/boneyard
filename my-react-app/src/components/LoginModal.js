@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/LogInModal.css'; // Reuse modal styles
+import '../styles/LoginModal.css'; // Reuse modal styles
 
 const LogInModal = ({ isOpen, onClose, onLogInSuccess, switchToSignUp, setUserPicksSubmitted }) => {
   const [email, setEmail] = useState('');
