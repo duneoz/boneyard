@@ -38,6 +38,8 @@ app.use('/api/mystats', myStatsRoutes); // My Stats Routes
 // Serve React static files after API routes
 if (process.env.NODE_ENV === 'production') {
   const buildPath = path.resolve(__dirname, '../my-react-app/build'); // Use path.resolve for consistent cross-platform paths
+  console.log('Current NODE_ENV:', process.env.NODE_ENV);
+
   app.use(express.static(buildPath));
 
   app.get('*', (req, res) => {
