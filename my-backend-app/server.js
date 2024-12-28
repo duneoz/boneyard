@@ -17,15 +17,15 @@ const pickRoutes = require('./routes/picks');
 const userStatsRoutes = require('./routes/userstats');
 const myStatsRoutes = require('./routes/mystats');
 
-// Allow requests from your frontend's URL
-const corsOptions = {
-  origin: ['https://bowl-bash-148f8ac7cdb4.herokuapp.com'], // Adjust to match your frontend's origin
-  credentials: true, // Allow credentials (cookies, etc.)
-};
-
 // Middleware
 app.use(express.json());
-app.use(cors(corsOptions));
+
+// Add CORS middleware (ensure this is above the API routes)
+app.use(cors({
+  origin: ['https://bowl-bash-148f8ac7cdb4.herokuapp.com', 'https://bowl-bash.herokuapp.com'],  // Allow both domains
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Methods allowed
+  credentials: true, // Allow cookies to be sent with requests
+}));
 
 // MongoDB Connection
 mongoose
