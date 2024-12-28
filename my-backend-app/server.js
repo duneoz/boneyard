@@ -27,6 +27,15 @@ app.use(cors({
   credentials: true, // Allow cookies to be sent with requests
 }));
 
+// Handle preflight OPTIONS requests for CORS
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', ['https://bowl-bash-148f8ac7cdb4.herokuapp.com', 'https://bowl-bash.herokuapp.com']);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.sendStatus(200);
+});
+
 // MongoDB Connection
 mongoose
   .connect(process.env.MONGO_URI, {
