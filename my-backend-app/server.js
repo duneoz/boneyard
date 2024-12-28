@@ -4,6 +4,8 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path'); // Path module to serve React build files
 
+console.log('Second Check Current NODE_ENV:', process.env.NODE_ENV);
+
 dotenv.config();
 
 const app = express();
@@ -38,7 +40,7 @@ app.use('/api/mystats', myStatsRoutes); // My Stats Routes
 // Serve React static files after API routes
 if (process.env.NODE_ENV === 'production') {
   const buildPath = path.resolve(__dirname, '../my-react-app/build'); // Use path.resolve for consistent cross-platform paths
-  console.log('Current NODE_ENV:', process.env.NODE_ENV);
+  console.log('Second Check Current NODE_ENV:', process.env.NODE_ENV);
 
   app.use(express.static(buildPath));
 
