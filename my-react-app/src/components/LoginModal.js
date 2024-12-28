@@ -17,7 +17,7 @@ const LogInModal = ({ isOpen, onClose, onLogInSuccess, switchToSignUp, setUserPi
     console.log('Attempting to log in with', { email, password });
 
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch('https://bowl-bash.herokuapp.com/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
