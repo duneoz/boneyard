@@ -48,7 +48,7 @@ const ConfidenceStep = ({
     console.log("User Picks:", picks);
 
     try {
-      const response = await fetch("http://localhost:5000/api/picks/submit", {
+      const response = await fetch("https://bowl-bash-148f8ac7cdb4.herokuapp.com/api/picks/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -60,7 +60,7 @@ const HomePage = () => {
     if (currentUserId) {
       const fetchUserStats = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/picks/user/${currentUserId}/picks-and-stats`);
+          const response = await axios.get(`https://bowl-bash-148f8ac7cdb4.herokuapp.com/api/picks/user/${currentUserId}/picks-and-stats`);
           setPicksSubmitted(true);
           setUserStats(response.data);
           setUsername(response.data.username); // Set the username from the response
@@ -76,7 +76,7 @@ const HomePage = () => {
     if (currentUserId) {
       const fetchMyStats = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/mystats/${currentUserId}`);
+          const response = await axios.get(`https://bowl-bash-148f8ac7cdb4.herokuapp.com/api/mystats/${currentUserId}`);
           // setPicksSubmitted(true);
           setMyStats(response.data);
         } catch (error) {
@@ -92,7 +92,7 @@ const HomePage = () => {
     setPicksModalOpen(false);
 
     try {
-      const response = await axios.get(`http://localhost:5000/api/picks/user/${currentUserId}/picks-and-stats`);
+      const response = await axios.get(`https://bowl-bash-148f8ac7cdb4.herokuapp.com/api/picks/user/${currentUserId}/picks-and-stats`);
       setUserStats(response.data);
     } catch (error) {
       console.error('Error fetching user stats:', error);

@@ -13,7 +13,7 @@ const MakePicksForm = ({ collectPicks, userPicks }) => {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/games');
+        const response = await fetch('https://bowl-bash-148f8ac7cdb4.herokuapp.com/api/games');
         const data = await response.json();
         const currentDate = new Date();
 

@@ -30,7 +30,7 @@ const SignUpModal = ({ closeModal }) => {
 
     try {
       console.log('Sending sign-up request...');
-      const response = await axios.post('http://localhost:5000/api/auth/signup', {
+      const response = await axios.post('https://bowl-bash-148f8ac7cdb4.herokuapp.com/api/auth/signup', {
         email: normalizedEmail, // Use `email` key, not `normalizedEmail`
         username,
         password,

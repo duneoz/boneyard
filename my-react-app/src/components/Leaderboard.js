@@ -13,7 +13,7 @@ const Leaderboard = () => {
   useEffect(() => {
     const fetchLeaderboardData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/userstats/leaderboard"); // Replace with your backend route
+        const response = await axios.get("https://bowl-bash-148f8ac7cdb4.herokuapp.com/api/userstats/leaderboard"); // Replace with your backend route
         setLeaderboardData(response.data);
         setLoading(false);
       } catch (err) {
