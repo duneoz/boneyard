@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start": "node my-backend-app/server.js", 
+    "heroku-postbuild": "cd my-react-app && npm install && npm run build && cd .. && npm install",
     "start:frontend": "cd my-react-app && npm start",
-    "start:backend": "cd my-backend-app && node server.js",
-    "heroku-postbuild": "cd my-react-app && npm install && npm run build"
+    "start:backend": "cd my-backend-app && node server.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -11,7 +11,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.8.4"
+    "mongoose": "^8.8.4",
+    "path": "^0.12.7" 
   },
   "devDependencies": {
     "concurrently": "^9.1.1",
