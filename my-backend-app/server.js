@@ -17,9 +17,15 @@ const pickRoutes = require('./routes/picks');
 const userStatsRoutes = require('./routes/userstats');
 const myStatsRoutes = require('./routes/mystats');
 
+// Allow requests from your frontend's URL
+const corsOptions = {
+  origin: ['https://bowl-bash-148f8ac7cdb4.herokuapp.com'], // Adjust to match your frontend's origin
+  credentials: true, // Allow credentials (cookies, etc.)
+};
+
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 // MongoDB Connection
 mongoose
