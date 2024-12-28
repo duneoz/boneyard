@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BackgroundGrid from './BackgroundGrid';
 import '../styles/HomePage.css';
 import SignUpModal from './SignUpModal';
-import LogInModal from './LogInModal';
+import LogInModal from './LoginModal';
 import Header from './Header';
 import PicksModal from './PicksModal';
 import UserStats from './UserStats';
