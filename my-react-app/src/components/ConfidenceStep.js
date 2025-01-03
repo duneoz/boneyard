@@ -118,14 +118,11 @@ const ConfidenceStep = ({
                             <strong>{pick.gameName}</strong>
                           </div>
                         </div>
-                        <div>
+                        <div className="spread">
                         {pick.matchup}, {pick.spread}
                         </div>
                         <div className="selected-team">
                           Pick: <i>{pick.selectedTeam}</i>
-                        </div>
-                        <div className="spread">
-                          Spread: {pick.spread || "Spread Not Available"}
                         </div>
                       </div>
                       <div className="gripper">
