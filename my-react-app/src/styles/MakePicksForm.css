@@ -109,7 +109,7 @@
 
   .game-card.disabled {
     pointer-events: none;
-    opacity: 0.3;
+    opacity: 0.2;
     background-color: #b8b8b8;
   }
   
