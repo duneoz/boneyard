@@ -234,17 +234,17 @@
   @media (max-width: 768px) {
 
     .selected-team {
-      font-size: 13px;
+      font-size: 15px;
       /* text-align: left; */
     }
   
     .spread {
-      font-size: 10px;
+      font-size: 12px;
       /* text-align: left; */
     }
 
     .game-name {
-      font-size: 13px;
+      font-size: 15px;
       /* font-weight: bold; */
       /* margin-right: 10px; Space between game name and selected team */
       /* text-align: left; */
