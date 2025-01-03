@@ -229,3 +229,28 @@
   .finalize-button-container {
     margin-top: 20px;
   }
+
+  @media (max-width: 768px) {
+
+    .picked-team {
+      font-size: 16px;
+      /* text-align: left; */
+    }
+  
+    .spread {
+      font-size: 10px;
+      /* text-align: left; */
+    }
+
+    .game-name {
+      font-size: 16px;
+      /* font-weight: bold; */
+      /* margin-right: 10px; Space between game name and selected team */
+      /* text-align: left; */
+    }
+    
+
+    .pick-card {
+      height: 80px; /* Ensure consistent card height */
+    }
+  }

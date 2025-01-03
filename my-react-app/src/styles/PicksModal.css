@@ -103,3 +103,14 @@
 .close-button:hover {
     background-color: darkred;
 }
+
+/* Mobile (max-width: 600px) */
+@media (max-width: 600px) {
+ 
+    .modal-content {
+       
+        max-width: 550px;
+        max-height: 85%;
+    }
+
+}

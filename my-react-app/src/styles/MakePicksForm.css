@@ -109,12 +109,12 @@
 
   .game-card.disabled {
     pointer-events: none;
-    opacity: 0.5;
-    background-color: #e0e0e0;
+    opacity: 0.3;
+    background-color: #b8b8b8;
   }
   
   .team-card.grayed-out {
-    color: #a0a0a0;
+    color: #a4a4a4;
     background-color: #f8f8f8;
   }
   
@@ -159,4 +159,5 @@
     .confidence-dropdown {
       max-width: 100%; /* Full width on smaller screens */
     }
+
   }
