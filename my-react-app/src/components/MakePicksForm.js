@@ -115,6 +115,7 @@ const MakePicksForm = ({ collectPicks, userPicks }) => {
         gameName: selectedGame.name,
         spread: selectedGame.spread,
         selectedTeam: selectedTeamName,
+        matchup: `${selectedGame.team1} vs ${selectedGame.team2}`
     };
 
     // Update the bracket with the selected team
