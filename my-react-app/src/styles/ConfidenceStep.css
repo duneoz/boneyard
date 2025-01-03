@@ -254,4 +254,9 @@
     .pick-card {
       height: 85px; /* Ensure consistent card height */
     }
+
+    .confidence-step-container {
+      padding: 10px;
+      /* max-height: 80vh; */
+    }
   }
