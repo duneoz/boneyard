@@ -232,7 +232,7 @@
 
   @media (max-width: 768px) {
 
-    .picked-team {
+    .selected-team {
       font-size: 13px;
       /* text-align: left; */
     }
