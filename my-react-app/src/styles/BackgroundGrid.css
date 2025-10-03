@@ -1,0 +1,71 @@
+.background-grid-wrapper {
+  position: absolute; /* Remove from document flow */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Cover the entire viewport */
+  z-index: -1; /* Send behind everything */
+  overflow: hidden; /* Prevent overflow issues */
+}
+
+
+.background-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 600vh; /* Increased height to allow more rows to be offscreen */
+  overflow: hidden;
+  /* z-index: -1; */
+  background-color: transparent;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 5 columns */
+  grid-template-rows: repeat(30, 1fr); /* Increase rows to 10 */
+  /* padding: 2.5%; */
+  /* will-change: transform; */
+  animation: floatUp 30s linear infinite; /* Adjust duration as needed */
+}
+    
+
+.grid-item {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  max-width: 250px;
+  height: 195px; /* Increase the height for larger logos */
+  object-fit: contain;
+  /* width: auto; */
+  /* width: 200px; Increase the width for larger logos */
+}
+
+
+
+@keyframes floatUp {
+    from {
+      transform: translateY(0); /* Start at the current position */
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-100vh); /* Move the grid upward */
+      opacity: 1;
+    }
+  }
+
+  
+  /* Mobile adjustments */
+@media (max-width: 768px) {
+    .background-grid {
+        /* padding: 5%; */
+        height: 800vh;
+        overflow: hidden;
+      grid-template-columns: repeat(6, 1fr); 
+      grid-template-rows: repeat(50, 1fr); 
+      animation: floatUp 20s linear infinite; /* Adjust duration as needed */
+      
+    }
+  
+    .grid-item {
+      max-width: 100px;
+      height: 110px; /* Smaller logos for mobile */
+      object-fit: contain;
+    }
+  }

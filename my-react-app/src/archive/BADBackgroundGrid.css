@@ -1,0 +1,34 @@
+/* Container for the grid */
+.background-grid {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Adjust as needed */
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 columns, each taking up 1 fraction of the available space */
+    gap: 5px; /* Adjust gap between items */
+  }
+  
+  /* Individual grid items */
+  .grid-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Logo styling */
+  .logo {
+    width: 80%;  /* Adjust logo size based on the column width */
+    height: auto;
+    object-fit: contain;
+  }
+  
+  /* Optional styling to separate rows (for testing/debugging) */
+  .grid-row:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .grid-row:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+    

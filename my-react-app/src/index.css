@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+/* Media Query for Mobile */
+@media (max-width: 768px) {
+  .Toastify__toast {
+    font-size: 12px; /* Smaller font size */
+    padding: 8px; /* Adjust padding */
+    margin-left: 20px !important; /* Center container */
+    margin-bottom: 20px !important;
+  }
+
+  .Toastify__toast-container {
+    width: 80% !important; /* Reduce container width */
+    
+  }
+}

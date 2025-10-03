@@ -1,0 +1,117 @@
+/* Center the logo and buttons on the screen */
+.logo-button-container {
+  display: flex;
+  flex-direction: column; /* Stack logo and buttons */
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  height: 100vh; /* Full height of the viewport */
+  z-index: 10; /* Ensure it is above the background grid */
+  position: relative; /* Allow interaction with z-index */
+}
+
+/* Logo container remains the same */
+.logo-container {
+  text-align: center;
+}
+
+/* Logo size dynamically adjusts */
+.homepage-logo {
+  max-width: 650px; /* Limit maximum size */
+  width: 75%; /* Dynamically scale */
+  height: auto; /* Maintain aspect ratio */
+}
+
+/* Button container: Horizontally align buttons with spacing */
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; /* Spacing between buttons */
+  width: 100%;
+}
+
+/* Base button styles */
+.home-page-button {
+  overflow: hidden;
+  position: relative;
+  background-color: rgb(219, 171, 80);
+  color: black;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease;
+  z-index: 1;
+  margin: 1%;
+  box-shadow: 0 10px 20px 0 rgba(0.5, 0.5, 0.5, 0.5), 0 10px 40px 0 rgba(0.5, 0.5, 0.5, 0.5);
+}
+
+/* Inner glow effect for buttons */
+.home-page-button::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: inherit;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Hover effect for buttons */
+.home-page-button:hover {
+  transform: scale(1.05);
+}
+
+/* Glow effect for active buttons */
+.home-page-button:before {
+  opacity: 1;
+  filter: blur(9px);
+}
+
+/* Keyframe animation for glow (if needed) */
+@keyframes a {
+  to {
+    --a: 1turn;
+  }
+}
+
+/* Glowing button styles (unchanged) */
+.glowing-button {
+  margin: 2% 0 0 2%;
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #ff4500;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 0 1px #ff4500, 0 0 5px #ff4500, 0 0 10px #ff4500;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.glowing-button:hover {
+  box-shadow: 0 0 10px #ff6347, 0 0 20px #ff6347, 0 0 40px #ff6347;
+  transform: scale(1.1);
+}
+
+.glowing-button:focus {
+  outline: none;
+}
+
+.glowing-button:active {
+  transform: scale(1);
+}
+
+/* Ensure full viewport height for homepage */
+.HomePage {
+  height: 100vh;
+  overflow-y: scroll;
+}
