@@ -142,7 +142,7 @@ const UserStats = ({ stats, mystats }) => {
         </div>
       </div>
       <div className="user-picks-section">
-        <h4 className="picks-heading">Your Picks</h4>
+        <h4 className="picks-heading">My Picks</h4>
         {picks.length > 0 ? renderGameTable() : <p className="no-picks-message">No picks available.</p>}
       </div>
     </div>

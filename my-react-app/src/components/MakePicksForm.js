@@ -10,10 +10,13 @@ const formatDate = (date) => {
 const MakePicksForm = ({ collectPicks, userPicks }) => {
   const [games, setGames] = useState([]);
 
+  // ✅ Use environment variable for API base URL
+  const API_BASE_URL = process.env.REACT_APP_API_URL || '';
+
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await fetch('https://bowl-bash-148f8ac7cdb4.herokuapp.com/api/games');
+        const response = await fetch(`${API_BASE_URL}/api/games`);
         const data = await response.json();
         const currentDate = new Date();
 
@@ -29,11 +32,10 @@ const MakePicksForm = ({ collectPicks, userPicks }) => {
     };
 
     fetchGames();
-  }, []);
+  }, [API_BASE_URL]);
 
   const updateBracket = (gameId, selectedTeamName) => {
     const selectedGame = games.find((game) => game._id === gameId);
-
     if (!selectedGame) return;
 
     setGames((prevGames) =>
@@ -54,10 +56,8 @@ const MakePicksForm = ({ collectPicks, userPicks }) => {
           )
         );
 
-        const nextGame = games.find((game) => game._id === nextGameId);
-        if (nextGame) {
-          updateDownstreamGames(nextGame, selectedTeamName);
-        }
+        const nextGame = games.find((g) => g._id === nextGameId);
+        if (nextGame) updateDownstreamGames(nextGame, selectedTeamName);
       }
 
       if (semiFinalGameId) {
@@ -66,14 +66,8 @@ const MakePicksForm = ({ collectPicks, userPicks }) => {
             semiFinalGame._id === semiFinalGameId
               ? {
                   ...semiFinalGame,
-                  team1:
-                    semiFinalGame.team1 === selectedTeamName
-                      ? 'TBD'
-                      : semiFinalGame.team1,
-                  team2:
-                    semiFinalGame.team2 === selectedTeamName
-                      ? 'TBD'
-                      : semiFinalGame.team2,
+                  team1: semiFinalGame.team1 === selectedTeamName ? 'TBD' : semiFinalGame.team1,
+                  team2: semiFinalGame.team2 === selectedTeamName ? 'TBD' : semiFinalGame.team2,
                   userPick: null,
                 }
               : semiFinalGame
@@ -87,14 +81,8 @@ const MakePicksForm = ({ collectPicks, userPicks }) => {
             finalGame._id === finalGameId
               ? {
                   ...finalGame,
-                  team1:
-                    finalGame.team1 === selectedTeamName
-                      ? 'TBD'
-                      : finalGame.team1,
-                  team2:
-                    finalGame.team2 === selectedTeamName
-                      ? 'TBD'
-                      : finalGame.team2,
+                  team1: finalGame.team1 === selectedTeamName ? 'TBD' : finalGame.team1,
+                  team2: finalGame.team2 === selectedTeamName ? 'TBD' : finalGame.team2,
                   userPick: null,
                 }
               : finalGame
@@ -110,29 +98,27 @@ const MakePicksForm = ({ collectPicks, userPicks }) => {
     const selectedGame = games.find((game) => game._id === gameId);
     if (!selectedGame) return;
 
-    // Create an object to store game details
     const pickDetails = {
-        gameName: selectedGame.name,
-        spread: selectedGame.spread,
-        selectedTeam: selectedTeamName,
-        matchup: `${selectedGame.team1} vs ${selectedGame.team2}`
+      gameName: selectedGame.name,
+      spread: selectedGame.spread,
+      selectedTeam: selectedTeamName,
+      matchup: `${selectedGame.team1} vs ${selectedGame.team2}`,
     };
 
-    // Update the bracket with the selected team
     updateBracket(gameId, selectedTeamName);
 
-    // Pass the updated pick to the parent component
     collectPicks((prevPicks) => ({
-        ...prevPicks,
-        [gameId]: pickDetails, // Store the entire object
+      ...prevPicks,
+      [gameId]: pickDetails,
     }));
-};
-
+  };
 
   return (
     <div className="make-picks-container">
       <h2>Step 1: Make Your Picks</h2>
-      <div>Pick the winner for each bowl game. You are picking the WINNER. Spread is provided strictly for context - you are not picking against the spread! Games that are grayed out have kicked off in the past, so you are no longer able to pick those games.</div>
+      <div>
+        Pick the winner for each bowl game. Spread is provided for context only. Games that are grayed out have kicked off, so you cannot pick them.
+      </div>
       <div>
         {games && games.length > 0 ? (
           games.map((game) => (

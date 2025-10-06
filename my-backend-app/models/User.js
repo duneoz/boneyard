@@ -20,7 +20,13 @@ const userSchema = new mongoose.Schema({
   picksSubmitted: {
     type: Boolean,
     default: false
+  },
+  leaguesJoined: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'League'
   }
+  ]
 });
 
 // Encrypt password before saving (using bcrypt)

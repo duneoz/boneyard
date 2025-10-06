@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import "../styles/ConfidenceStep.css"; // Ensure styles are updated
+import "../styles/ConfidenceStep.css";
 import { toast } from 'react-toastify';
 
 const ConfidenceStep = ({ 
@@ -11,10 +11,10 @@ const ConfidenceStep = ({
 }) => {
   const [orderedPicks, setOrderedPicks] = useState([]);
 
-  console.log("currentUserId in Confidence:", currentUserId);
+  // ✅ Use environment variable for API base URL
+  const API_BASE_URL = process.env.REACT_APP_API_URL || '';
 
   useEffect(() => {
-    // Convert user picks into an array with game IDs and selected team
     const picksArray = Object.entries(userPicks).map(([gameId, teamData]) => ({
       gameId,
       ...teamData,
@@ -23,12 +23,10 @@ const ConfidenceStep = ({
   }, [userPicks]);
 
   const handleDragEnd = (result) => {
-    if (!result.destination) return; // If dropped outside a list, do nothing
-
+    if (!result.destination) return;
     const updatedPicks = [...orderedPicks];
     const [movedItem] = updatedPicks.splice(result.source.index, 1);
     updatedPicks.splice(result.destination.index, 0, movedItem);
-
     setOrderedPicks(updatedPicks);
   };
 
@@ -42,36 +40,34 @@ const ConfidenceStep = ({
       userId: currentUserId,
       gameId: pick.gameId,
       selectedWinner: pick.selectedTeam,
-      confidence: 46 - index, // Assign confidence based on position
+      confidence: 46 - index,
     }));
-    
+
     console.log("User Picks:", picks);
 
     try {
-      const response = await fetch("https://bowl-bash-148f8ac7cdb4.herokuapp.com/api/picks/submit", {
+      const response = await fetch(`${API_BASE_URL}/api/picks/submit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ picks }), // Sending picks as an array
+        body: JSON.stringify({ picks }),
+        credentials: "include",
       });
 
       if (response.ok) {
         console.log("Picks submitted successfully");
-
-        // Successful picks submission example
-        toast.success('Picks submitted successfully!');
-
-        // Trigger the handleSaveAndClose from the parent (HomePage.js)
+        toast.success("Picks submitted successfully!");
         onSaveAndClose();
-
-        onClose(); // Close the modal after successful save
+        onClose();
       } else {
         const errorData = await response.json();
         console.error("Error saving picks:", errorData.message);
+        toast.error(`Error saving picks: ${errorData.message}`);
       }
     } catch (error) {
       console.error("Error saving picks:", error);
+      toast.error("An unexpected error occurred while saving picks.");
     }
   };
 
@@ -94,14 +90,12 @@ const ConfidenceStep = ({
               {orderedPicks.map((pick, index) => (
                 <Draggable
                   key={pick.gameId}
-                  draggableId={`${pick.gameId}-${index}`} // Ensure draggableId is unique
+                  draggableId={`${pick.gameId}-${index}`}
                   index={index}
                 >
                   {(provided, snapshot) => (
                     <div
-                      className={`pick-card ${
-                        snapshot.isDragging ? "dragging" : ""
-                      }`}
+                      className={`pick-card ${snapshot.isDragging ? "dragging" : ""}`}
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
@@ -119,19 +113,15 @@ const ConfidenceStep = ({
                           </div>
                         </div>
                         <div className="spread">
-                        {pick.matchup}, {pick.spread}
+                          {pick.matchup}, {pick.spread}
                         </div>
                         <div className="selected-team">
                           Pick: <i>{pick.selectedTeam}</i>
                         </div>
                       </div>
                       <div className="gripper">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span></span><span></span><span></span>
+                        <span></span><span></span><span></span>
                       </div>
                     </div>
                   )}
@@ -143,14 +133,13 @@ const ConfidenceStep = ({
         </Droppable>
       </div>
 
-      {/* Save and Close button */}
       <div className="finalize-button-container">
         <button className="save-button" onClick={handleSave}>
           Save and Close
         </button>
         <button className="modal-close-button" onClick={onClose}>
-            Close
-          </button>
+          Close
+        </button>
       </div>
     </DragDropContext>
   );

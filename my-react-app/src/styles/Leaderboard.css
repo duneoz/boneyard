@@ -1,7 +1,7 @@
 /* Leaderboard Container */
 .leaderboard-container {
     margin: 20px auto;
-    max-width: 1100px;
+    max-width: 1500px;
     border-radius: 12px;
     background-color: #ffffff;
     /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); */
@@ -82,6 +82,37 @@
     color: #555;
     margin: 1rem 0;
 }
+
+.league-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.league-btn {
+  padding: 0.45rem 0.9rem;
+  border: 2px solid  rgb(219, 171, 80);   /* gold outline by default */
+  background-color: transparent;
+  color:  rgb(219, 171, 80);
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.league-btn:hover {
+  background-color:  rgb(219, 171, 80);
+  color: #000;
+}
+
+.league-btn.active {
+  background-color:  rgb(219, 171, 80);  /* filled gold when selected */
+  color: #000;
+  border-color:  rgb(219, 171, 80);
+}
+
+
 
 /* Media Queries */
 

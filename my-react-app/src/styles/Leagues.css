@@ -1,0 +1,210 @@
+/* container */
+.leagues-page-container {
+  padding: 1.5rem;
+  box-sizing: border-box;
+  margin: 0 30px;
+  padding: 20px;
+  color: #222;
+}
+
+/* header row */
+.leagues-header-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;   /* vertical centering of children */
+  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+  flex-wrap: wrap;       /* responsive fallback */
+}
+
+.leagues-header-left {
+  display: flex;
+  align-items: center;   /* vertically center h2 and buttons */
+  gap: 0.75rem;          /* space between title and buttons */
+}
+
+.leagues-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;              /* remove default h2 margin */
+  line-height: 1;         /* keep height tight for vertical alignment */
+  display: inline-flex;
+  align-items: center;    /* center any inline icon/text with buttons */
+}
+
+.leagues-header-buttons {
+  display: flex;
+  align-items: center;    /* vertically center buttons with title */
+  gap: 0.5rem;            /* space between Create and Join */
+}
+
+button.small {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;    /* center text vertically */
+  justify-content: center;
+  height: 36px;           /* match height of h2 line-height for alignment */
+  line-height: 1;
+}
+
+button.small:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+button.small:active {
+  transform: translateY(0);
+}
+
+button.small.secondary {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+button.small.secondary:hover {
+  background-color: #d6d8db;
+}
+
+/* cards container */
+.league-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  max-width: 1500px;
+  margin: auto;
+}
+
+/* card */
+.league-card {
+  background-color: #e4e4e4;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.league-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.league-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.league-name {
+  font-size: 1.15rem;
+  margin: 0;
+  color: #1f2937;
+}
+
+/* description */
+.league-description {
+  margin: 0.25rem 0 0.5rem 0;
+  color: #4b5563;
+  font-size: 0.95rem;
+  min-height: 2.2em;
+}
+
+/* meta row */
+.league-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.league-rank .label {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-right: 0.25rem;
+}
+
+.league-rank .value {
+  font-weight: 600;
+  color: #111827;
+  font-size: 1rem;
+}
+
+/* actions row */
+.league-card-actions {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.creator-joincode {
+  font-size: 0.9rem;
+  color: #1f2937;
+  background: #d2d2d2;
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+}
+
+.creator-joincode .code {
+  font-family: monospace;
+  margin-left: 0.4rem;
+  font-weight: 700;
+}
+
+/* small action button */
+.small-btn {
+  border: none;
+  padding: 0.5rem 0.9rem;
+  background: #0f172a;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;           /* match header height for consistency */
+  line-height: 1;
+}
+
+.small-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(2,6,23,0.12);
+}
+
+/* empty state */
+.no-leagues {
+  color: #6b7280;
+  padding: 1rem;
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+/* responsive adjustments */
+@media (max-width: 700px) {
+  .league-cards-container {
+    grid-template-columns: 1fr;
+  }
+
+  .league-description {
+    min-height: auto;
+  }
+
+  /* stack header & buttons on mobile */
+  .leagues-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

@@ -10,6 +10,9 @@ router.use(cors());
 
 // Sign Up
 router.post('/signup', async (req, res) => {
+
+  console.log("🪵 Incoming signup request body:", req.body); // <--- Add this line
+  
   const { email, password, username } = req.body;
 
   // Basic validation

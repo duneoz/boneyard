@@ -6,44 +6,41 @@ const LogInModal = ({ isOpen, onClose, onLogInSuccess, switchToSignUp, setUserPi
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // Determine the correct API URL based on the environment
-  const apiUrl =
-    process.env.NODE_ENV === 'production'
-      ? 'https://bowl-bash.herokuapp.com/api/auth/login' // Replace with your Heroku app URL
-      : 'http://localhost:5000/api/auth/login';
+  // ✅ Use an environment variable for the base URL (optional in dev)
+  const API_BASE_URL = process.env.REACT_APP_API_URL || '';
 
-      const handleLogIn = async (e) => {
-        e.preventDefault();
-        console.log('Attempting to log in with', { email, password });
-    
-        try {
-          const response = await fetch('https://bowl-bash-148f8ac7cdb4.herokuapp.com/api/auth/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-            credentials: 'include', // Include credentials (cookies, etc.)
-          });
-    
-          const data = await response.json();
-          console.log('Login response data:', data); // Log the entire response
-    
-          if (response.ok) {
-            localStorage.setItem('authToken', data.token);
-            console.log('Login successful!', data.userId);  // Log the userId
-            setUserPicksSubmitted(data.picksSubmitted);
-            onLogInSuccess(data.userId, data.username); // Pass userId up to HomePage
-            onClose();  // Close the modal
-          } else {
-            setError(data.message);
-          }
-        } catch (err) {
-          console.error('Log in error:', err);
-          setError('An unexpected error occurred. Please try again later.');
-        }
-    };
-    
+  const handleLogIn = async (e) => {
+    e.preventDefault();
+    console.log('Attempting to log in with', { email, password });
+
+    try {
+      // ✅ Use the dynamic base URL (works locally + in production)
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+        // credentials: 'include', // Include credentials (cookies, etc.)
+      });
+
+      const data = await response.json();
+      console.log('Login response data:', data);
+
+      if (response.ok) {
+        localStorage.setItem('authToken', data.token);
+        console.log('Login successful!', data.userId);
+        setUserPicksSubmitted(data.picksSubmitted);
+        onLogInSuccess(data.userId, data.username);
+        onClose();
+      } else {
+        setError(data.message);
+      }
+    } catch (err) {
+      console.error('Log in error:', err);
+      setError('An unexpected error occurred. Please try again later.');
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -77,7 +74,6 @@ const LogInModal = ({ isOpen, onClose, onLogInSuccess, switchToSignUp, setUserPi
             <label htmlFor="password">Password</label>
           </div>
 
-          {/* The Log In button triggers the form submission */}
           <div className="modal-footer">
             <button className="modal-button submit" type="submit">
               Log In

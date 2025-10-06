@@ -2,68 +2,66 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const path = require('path'); // Path module to serve React build files
+const path = require('path');
+const leaguesRoutes = require('./routes/leagues');
 
-console.log('Second Check Current NODE_ENV:', process.env.NODE_ENV);
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const app = express();
-
-// Import Routes
-const authRoutes = require('./routes/auth');
-const gameRoutes = require('./routes/games');
-const pickRoutes = require('./routes/picks');
-const userStatsRoutes = require('./routes/userstats');
-const myStatsRoutes = require('./routes/mystats');
 
 // Middleware
 app.use(express.json());
 
-// Add CORS middleware (ensure this is above the API routes)
-app.use(cors({
-  origin: ['https://bowl-bash-148f8ac7cdb4.herokuapp.com', 'https://bowl-bash.herokuapp.com'],  // Allow both domains
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Methods allowed
-  credentials: true, // Allow cookies to be sent with requests
-}));
+// ✅ CORS setup
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://www.nicksbowlbash.com',
+  'https://bowl-bash.herokuapp.com',
+  'https://bowl-bash-148f8ac7cdb4.herokuapp.com'
+];
 
-// Handle preflight OPTIONS requests for CORS
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', ['https://bowl-bash-148f8ac7cdb4.herokuapp.com', 'https://bowl-bash.herokuapp.com']);
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin); // dynamic, not *
+  }
   res.header('Access-Control-Allow-Credentials', 'true');
-  res.sendStatus(200);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
 });
 
-// MongoDB Connection
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+// ✅ Test route to verify CORS
+app.get('/api/test-cors', (req, res) => {
+  res.json({ message: 'CORS is working!', origin: req.headers.origin });
+});
+
+// MongoDB
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Connected to MongoDB Atlas'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+  .catch(err => console.error(err));
 
-// API Routes
-app.use('/api/auth', authRoutes); // Authentication Routes
-app.use('/api/games', gameRoutes); // Game Routes
-app.use('/api/picks', pickRoutes); // Picks Routes
-app.use('/api/userStats', userStatsRoutes); // User Stats Routes
-app.use('/api/mystats', myStatsRoutes); // My Stats Routes
+// Routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/games', require('./routes/games'));
+app.use('/api/picks', require('./routes/picks'));
+app.use('/api/userStats', require('./routes/userstats'));
+app.use('/api/mystats', require('./routes/mystats'));
+app.use('/api/leagues', leaguesRoutes);
 
-// Serve React static files after API routes
+
+// Serve React build in production
 if (process.env.NODE_ENV === 'production') {
-  const buildPath = path.resolve(__dirname, '../my-react-app/build'); // Use path.resolve for consistent cross-platform paths
-  console.log('Second Check Current NODE_ENV:', process.env.NODE_ENV);
-
+  const buildPath = path.resolve(__dirname, '../my-react-app/build');
   app.use(express.static(buildPath));
-
   app.get('*', (req, res) => {
     res.sendFile(path.join(buildPath, 'index.html'));
   });
 }
 
-// Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

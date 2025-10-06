@@ -11,11 +11,12 @@ const SignUpModal = ({ closeModal }) => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // ✅ Use environment variable for API base URL
+  const API_BASE_URL = process.env.REACT_APP_API_URL || '';
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     setError('');
-
-    
 
     const normalizedEmail = email.toLowerCase();
 
@@ -26,34 +27,40 @@ const SignUpModal = ({ closeModal }) => {
     }
 
     setIsLoading(true);
-    setError(''); // Clear previous error if any
 
     try {
       console.log('Sending sign-up request...');
-      const response = await axios.post('https://bowl-bash-148f8ac7cdb4.herokuapp.com/api/auth/signup', {
-        email: normalizedEmail, // Use `email` key, not `normalizedEmail`
+      const response = await axios.post(`${API_BASE_URL}/api/auth/signup`, {
+        email: normalizedEmail,
         username,
         password,
       });
 
-      console.log('Response received:', response.data);  // Check the response structure
+      console.log('Response received:', response.data);
 
       if (response.data.message === 'User created successfully') {
         // Store the JWT token in localStorage
         localStorage.setItem('authToken', response.data.token);
         console.log('Sign-up successful, closing modal...');
-        closeModal(); // Close the modal after successful sign-up
-        // Successful sign-up example
+        closeModal(); 
         toast.success('Sign up successful! Please Log In.');
       } else {
-        setError(response.data.message); // Show any error from the backend
+        setError(response.data.message);
       }
     } catch (err) {
-      setError('Something went wrong. Please try again.');
-      console.error('Error during sign-up:', err);
+  console.error('Error during sign-up:', err);
+
+      // ✅ Show backend message if available
+      const backendMessage = err.response?.data?.message;
+      if (backendMessage) {
+        setError(backendMessage);
+      } else {
+        setError('Something went wrong. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
+
   };
 
   return (
@@ -111,7 +118,6 @@ const SignUpModal = ({ closeModal }) => {
 
           {error && <p className="error">{error}</p>}
           
-          {/* Modal Footer with buttons */}
           <div className="modal-footer">
             <button className="modal-button submit" type="submit" disabled={isLoading}>
               {isLoading ? 'Signing Up...' : 'Sign Up'}
