@@ -4,6 +4,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { createLeague, fetchUserLeagues } from '../api/leagues';
 import { toast } from 'react-toastify';
 import "../styles/Leagues.css";
+import '../styles/LoginModal.css'; // Reuse modal styles
 
 const CreateLeagueModal = ({ show, onHide, onLeagueCreated }) => {
   const [name, setName] = useState('');
@@ -100,34 +101,39 @@ const CreateLeagueModal = ({ show, onHide, onLeagueCreated }) => {
           <Modal.Title>Create League</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label>League Name</Form.Label>
-            <Form.Control
+          <Form.Group className="input-container">
+            <input
+              id="league-name"
               type="text"
-              value={name}
+              value={name}  
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter league name"
+              placeholder=" "
               required
             />
+            <label htmlFor="league-name">League Name</label>
           </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Description (optional)</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
+            
+          <Form.Group className="input-container">
+            <input
+              id="league-description"
+              type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter a description"
+              placeholder=" "
             />
+            <label htmlFor="league-description">Description (optional)</label>
           </Form.Group>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={onHide} disabled={loading}>
-            Cancel
-          </Button>
-          <Button variant="primary" type="submit" disabled={loading}>
+        <Modal.Footer className='modal-footer'>
+          
+          <Button className="modal-button submit" type="submit" disabled={loading}>
             {loading ? 'Creating...' : 'Create League'}
           </Button>
+          
+          <Button className="modal-button close" onClick={onHide} disabled={loading}>
+            Cancel
+          </Button>
+          
         </Modal.Footer>
       </Form>
     </Modal>

@@ -4,6 +4,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { joinLeague } from '../api/leagues';
 import { toast } from 'react-toastify';
 import "../styles/Leagues.css";
+import '../styles/LoginModal.css'; // Reuse modal styles
 
 const JoinLeagueModal = ({ show, onHide, onLeagueJoined }) => {
   const [code, setCode] = useState('');
@@ -38,24 +39,28 @@ const JoinLeagueModal = ({ show, onHide, onLeagueJoined }) => {
           <Modal.Title>Join League</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label>League Code</Form.Label>
-            <Form.Control
+          <Form.Group className="input-container">
+            <input
+              id="league-code"
               type="text"
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              placeholder="Enter league code"
+              placeholder=" "
               required
             />
+            <label htmlFor="league-code">Enter League Code</label>
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={onHide} disabled={loading}>
-            Cancel
-          </Button>
-          <Button variant="primary" type="submit" disabled={loading}>
+          
+          <Button className="modal-button submit" type="submit" disabled={loading}>
             {loading ? 'Joining...' : 'Join League'}
           </Button>
+
+          <Button className="modal-button close" onClick={onHide} disabled={loading}>
+            Cancel
+          </Button>
+
         </Modal.Footer>
       </Form>
     </Modal>
